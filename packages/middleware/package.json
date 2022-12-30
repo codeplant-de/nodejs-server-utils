@@ -1,11 +1,12 @@
 {
   "name": "@codeplant-de/nodejs-server-middleware",
   "version": "1.0.0-rc.1",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/types.d.ts",
   "license": "MIT",
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
+      "types": "./lib/types.d.ts",
       "default": "./lib/index.js"
     }
   },
@@ -13,6 +14,7 @@
     "lint": "yarn cp-lint",
     "format": "yarn cp-format",
     "test": "yarn jest",
+    "test:types": "yarn tsd --files ./src/**/*.test-d.ts",
     "build": "rimraf lib && yarn build:cjs && yarn build:types",
     "build:cjs": "yarn cp-transpile cjs lib",
     "build:types": "yarn cp-transpile types lib"
@@ -21,6 +23,7 @@
     "@codeplant-de/http-context-provider-middleware": "^1.0.0-rc.1",
     "@codeplant-de/logger-provider-middleware": "^1.0.0-rc.1",
     "@codeplant-de/request-id-provider-middleware": "^1.0.0-rc.1",
+    "@codeplant-de/request-logging-middleware": "^1.0.0-rc.1",
     "@types/connect": "^3.4.35"
   },
   "devDependencies": {

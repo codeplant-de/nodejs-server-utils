@@ -8,11 +8,13 @@ import {Options} from './types/options'
 import {defaultRequestToMeta, defaultResponseToMeta} from './defaults'
 import {mergeFormatters} from './utils'
 
+export type RequestLoggingOptions = Partial<Options> & Pick<Options, 'loggerAccessor'>
+
 const requestLoggingMiddlewareFactory = <
   REQ extends IncomingMessage = IncomingMessage,
   RES extends ServerResponse = ServerResponse
 >(
-  userOptions: Partial<Options> & Pick<Options, 'loggerAccessor'>
+  userOptions: RequestLoggingOptions
 ): ((req: REQ, res: RES, next: NextFunction) => void) => {
   const options = {
     hook: 'on-headers',

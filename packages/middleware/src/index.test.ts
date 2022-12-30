@@ -8,23 +8,25 @@ import createMiddlewareStack from './index'
 const testLogger = loggerFactory({silent: true})
 
 describe('createMiddlewareStack', () => {
-  it('does not add any middlewares if not configured', () => {
-    const middlewares = createMiddlewareStack()
+  it('does not add any middlewares if all disabled', () => {
+    const middlewares = createMiddlewareStack({
+      withHttpContextProvider: false,
+      withLoggerProvider: false,
+      withRequestIdProvider: false,
+      withRequestLogging: false,
+    })
 
     expect(middlewares).toHaveLength(0)
   })
 
   it('creates and connects all different middlewares', () => {
     const middlewares = createMiddlewareStack({
-      withHttpContextProvider: true,
-      withRequestIdProvider: true,
-      withLoggerProvider: true,
       loggerProviderOptions: {
         logger: testLogger,
       },
     })
 
-    expect(middlewares).toHaveLength(3)
+    expect(middlewares).toHaveLength(4)
   })
 
   describe('integration', () => {
@@ -55,6 +57,7 @@ describe('createMiddlewareStack', () => {
         loggerProviderOptions: {
           logger: testLogger,
         },
+        withRequestLogging: true,
       })
 
       middlewares.attach(app)

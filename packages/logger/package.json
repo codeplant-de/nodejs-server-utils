@@ -10,8 +10,8 @@
       "default": "./lib/index.js"
     },
     "./test": {
-      "types": "./lib/test.d.ts",
-      "default": "./lib/test.js"
+      "types": "./lib/test-utils.d.ts",
+      "default": "./lib/test-utils.js"
     }
   },
   "scripts": {

@@ -14,6 +14,7 @@ export {mergeFormatters} from './utils'
 export type {
   ResponseToMetaFormatter,
   RequestToMetaFormatter,
-  Options,
   DynamicLevelFunction,
 } from './types/options'
+
+export type {RequestLoggingOptions} from './request-logging-middleware-factory'

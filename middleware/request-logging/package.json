@@ -1,7 +1,8 @@
 {
   "name": "@codeplant-de/request-logging-middleware",
   "version": "1.0.0-rc.1",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "license": "MIT",
   "exports": {
     ".": {
@@ -23,6 +24,7 @@
     "on-headers": "^1.0.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.15",
     "@types/on-finished": "^2.3.1",
     "@types/on-headers": "^1.0.0",
     "jest": "^27.0.0",

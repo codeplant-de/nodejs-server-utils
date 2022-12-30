@@ -1,11 +1,12 @@
 import {IncomingMessage, ServerResponse} from 'node:http'
+import type {Request, Response} from 'express'
 import type {Logger} from '@codeplant-de/nodejs-server-logger'
 
-export type RequestToMetaFormatter = <T extends IncomingMessage = IncomingMessage>(
+export type RequestToMetaFormatter<T extends IncomingMessage | Request = IncomingMessage> = (
   req: T
 ) => Record<string, unknown> | undefined
 
-export type ResponseToMetaFormatter = <T extends ServerResponse = ServerResponse>(
+export type ResponseToMetaFormatter<T extends ServerResponse | Response = ServerResponse> = (
   res: T
 ) => Record<string, unknown> | undefined
 
@@ -16,8 +17,8 @@ export type DynamicLevelFunction = (
 ) => string
 
 export interface Options<
-  REQ extends IncomingMessage = IncomingMessage,
-  RES extends ServerResponse = ServerResponse
+  REQ extends IncomingMessage | Request = IncomingMessage,
+  RES extends ServerResponse | Response = ServerResponse
 > {
   requestToMeta: RequestToMetaFormatter<REQ> | RequestToMetaFormatter<REQ>[]
 
