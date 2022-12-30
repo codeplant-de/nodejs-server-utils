@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-server-utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@codeplant-de/javascript-linting": "^1.0.0-1",
+    "@codeplant-de/javascript-testing": "^1.0.0-1",
+    "@codeplant-de/javascript-transpiling": "^1.0.0-1",
+    "jest-extended": "^3.2.0",
+    "lerna": "^6.3.0",
+    "node-mocks-http": "^1.12.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.4"
+  },
+  "workspaces": [
+    "middleware/*",
+    "packages/*"
+  ]
+}

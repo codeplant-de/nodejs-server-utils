@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "@codeplant-de/eslint-config/node.yml"
+  ]
+}

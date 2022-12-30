@@ -1,0 +1,35 @@
+{
+  "name": "@codeplant-de/nodejs-server-logger",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./test": {
+      "types": "./lib/test.d.ts",
+      "default": "./lib/test.js"
+    }
+  },
+  "scripts": {
+    "lint": "yarn cp-lint",
+    "format": "yarn cp-format",
+    "test": "yarn jest",
+    "build": "rimraf lib && yarn build:cjs && yarn build:types",
+    "build:cjs": "yarn cp-transpile cjs lib",
+    "build:types": "yarn cp-transpile types lib"
+  },
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "triple-beam": "^1.3.0",
+    "winston": "^3.8.2",
+    "winston-transport": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/triple-beam": "^1.3.2",
+    "jest": "^27.0.0"
+  }
+}

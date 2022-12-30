@@ -1,0 +1,21 @@
+{
+  "name": "@codeplant-de/error-logging-middleware",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "lint": "yarn cp-lint",
+    "format": "yarn cp-format",
+    "test": "yarn jest",
+    "build": "rimraf lib && yarn build:cjs && yarn build:types",
+    "build:cjs": "yarn cp-transpile cjs lib",
+    "build:types": "yarn cp-transpile types lib"
+  }
+}

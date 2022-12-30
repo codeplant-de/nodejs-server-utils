@@ -1,0 +1,24 @@
+{
+  "name": "@codeplant-de/logger-provider-middleware",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "lint": "yarn cp-lint",
+    "format": "yarn cp-format",
+    "test": "yarn jest",
+    "build": "rimraf lib && yarn build:cjs && yarn build:types",
+    "build:cjs": "yarn cp-transpile cjs lib",
+    "build:types": "yarn cp-transpile types lib"
+  },
+  "dependencies": {
+    "@types/connect": "^3.4.35"
+  }
+}

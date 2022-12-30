@@ -1,0 +1,31 @@
+{
+  "name": "@codeplant-de/request-logging-middleware",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "lint": "yarn cp-lint",
+    "format": "yarn cp-format",
+    "test": "yarn jest",
+    "build": "rimraf lib && yarn build:cjs && yarn build:types",
+    "build:cjs": "yarn cp-transpile cjs lib",
+    "build:types": "yarn cp-transpile types lib"
+  },
+  "dependencies": {
+    "@types/connect": "^3.4.35",
+    "on-finished": "^2.4.1",
+    "on-headers": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/on-finished": "^2.3.1",
+    "@types/on-headers": "^1.0.0",
+    "jest": "^27.0.0",
+    "percentile": "^1.6.0"
+  }
+}
