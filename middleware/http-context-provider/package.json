@@ -22,5 +22,8 @@
     "@types/cls-hooked": "^4.3.3",
     "@types/connect": "^3.4.35",
     "cls-hooked": "^4.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

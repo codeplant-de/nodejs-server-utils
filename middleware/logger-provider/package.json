@@ -20,5 +20,8 @@
   },
   "dependencies": {
     "@types/connect": "^3.4.35"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

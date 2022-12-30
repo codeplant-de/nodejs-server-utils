@@ -31,5 +31,8 @@
     "@types/supertest": "^2.0.12",
     "express": "^4.18.2",
     "supertest": "^6.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
