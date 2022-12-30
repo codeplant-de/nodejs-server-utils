@@ -1,6 +1,6 @@
 {
   "name": "@codeplant-de/request-logging-middleware",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "main": "index.js",
   "license": "MIT",
   "exports": {
