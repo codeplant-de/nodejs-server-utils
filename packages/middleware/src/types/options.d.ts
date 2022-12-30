@@ -1,6 +1,6 @@
 import {RequestIdProviderOptions} from '@codeplant-de/request-id-provider-middleware'
 import {LoggerProviderOptions} from '@codeplant-de/logger-provider-middleware'
-import {RequestLoggingOptions} from '@codeplant-de/request-logging-middleware/src'
+import {RequestLoggingOptions} from '@codeplant-de/request-logging-middleware'
 
 export type ContextProviderDisabledOption = {
   withHttpContextProvider?: false
@@ -17,7 +17,7 @@ export type ContextProviderOption = ContextProviderDisabledOption | ContextProvi
  */
 type RequestIdProviderDisabledOption = {
   withRequestIdProvider: false
-  requestIdProviderOptions?: unknown
+  requestIdProviderOptions?: Partial<RequestIdProviderOptions>
 }
 
 type RequestIdProviderEnabledOption = {
@@ -31,7 +31,7 @@ export type RequestIdProviderOption =
 
 type LoggerProviderDisabledOption = {
   withLoggerProvider: false
-  loggerProviderOptions?: unknown
+  loggerProviderOptions?: Partial<LoggerProviderOptions>
 }
 
 type LoggerProviderEnabledOption = {
@@ -43,11 +43,11 @@ type LoggerProviderEnabledOption = {
 export type LoggerProviderOption = LoggerProviderDisabledOption | LoggerProviderEnabledOption
 
 type RequestLoggingDisabledOption = {
-  withLoggerProvider?: unknown
+  withLoggerProvider?: boolean
 
   withRequestLogging: false
 
-  requestLoggingOptions?: unknown
+  requestLoggingOptions?: Partial<RequestLoggingOptions>
 }
 
 type RequestLoggingEnabledOption =

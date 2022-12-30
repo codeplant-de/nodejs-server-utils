@@ -78,3 +78,5 @@ const createMiddlewareStack = (userOptions: CreateMiddlewareStackOptions): Middl
 }
 
 export default createMiddlewareStack
+
+export * from './constants'
