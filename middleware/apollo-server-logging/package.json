@@ -1,0 +1,29 @@
+{
+  "name": "@codeplant-de/apollo-server-logging-middleware",
+  "version": "1.0.0-rc.1",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "lint": "yarn cp-lint",
+    "format": "yarn cp-format",
+    "test": "yarn jest",
+    "test:types": "yarn tsd --files ./src/**/*.test-d.ts",
+    "build": "rimraf lib && yarn build:cjs && yarn build:types",
+    "build:cjs": "yarn cp-transpile cjs lib",
+    "build:types": "yarn cp-transpile types lib"
+  },
+  "dependencies": {
+    "apollo-server-types": "^3.7.1",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "apollo-server-plugin-base": "^3.7.1"
+  }
+}

@@ -6,7 +6,7 @@ import onFinished from 'on-finished'
 import {Options} from './types/options'
 
 import {defaultRequestToMeta, defaultResponseToMeta} from './defaults'
-import {mergeFormatters} from './utils'
+import {formatTimestamp, mergeFormatters} from './utils'
 
 export type RequestLoggingOptions = Partial<Options> & Pick<Options, 'loggerAccessor'>
 
@@ -50,7 +50,7 @@ const requestLoggingMiddlewareFactory = <
       }
 
       const meta: Record<string, any> = {
-        duration: options.timestampAccessor() - startTime,
+        duration: formatTimestamp(options.timestampAccessor() - startTime),
       }
 
       if (options.reqField) {
