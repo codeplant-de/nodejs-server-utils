@@ -39,9 +39,9 @@ const requestLoggingMiddlewareFactory = <
     typeof options.responseToMeta === 'function'
       ? options.responseToMeta
       : mergeFormatters(options.responseToMeta)
-  const startTime = options.timestampAccessor()
 
   return (req, res, next) => {
+    const startTime = options.timestampAccessor()
     const emitter = options.hook === 'on-headers' ? onHeaders : onFinished
 
     emitter(res, () => {
