@@ -31,7 +31,7 @@ export const getIpFromGraphQLRequest = (req: GraphQLRequest): string | null => {
  * shortens a timestamp to max 4 decimals
  * @param hTimestamp
  */
-export const formatTimestamp = (hTimestamp: number): number => Math.round(hTimestamp * 1000) / 1000
+export const formatTimestamp = (hTimestamp: number): number => Math.round(hTimestamp * 1e4) / 1e4
 
 export type GenericFormatter<I extends any[], R = any> = (...input: I) => R
 

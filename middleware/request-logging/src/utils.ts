@@ -17,4 +17,4 @@ export function mergeFormatters<F extends RequestToMetaFormatter | ResponseToMet
  * shortens a timestamp to max 4 decimals
  * @param hTimestamp
  */
-export const formatTimestamp = (hTimestamp: number): number => Math.round(hTimestamp * 1000) / 1000
+export const formatTimestamp = (hTimestamp: number): number => Math.round(hTimestamp * 1e4) / 1e4
