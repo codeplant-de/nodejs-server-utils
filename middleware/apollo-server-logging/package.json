@@ -25,5 +25,8 @@
   },
   "devDependencies": {
     "apollo-server-plugin-base": "^3.7.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
