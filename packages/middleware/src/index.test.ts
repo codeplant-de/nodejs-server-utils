@@ -63,10 +63,9 @@ describe('createMiddlewareStack', () => {
       middlewares.attach(app)
 
       let innerReq: express.Request
-      let requestIdFromContext: string
+      let requestIdFromContext: string | null
       const testHandler = jest.fn((req, res) => {
         innerReq = req
-        // @ts-expect-error needs to be fixed! @todo
         requestIdFromContext = getFromHttpContext('request-id')
         res.status(200).json({ping: 'pong'})
       })

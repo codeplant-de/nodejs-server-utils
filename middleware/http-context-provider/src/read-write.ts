@@ -2,9 +2,7 @@ import cls from 'cls-hooked'
 import {HttpContext, HttpContextKey} from './types/context'
 import {namespaceId} from './middleware'
 
-export function getFromHttpContext<V extends Exclude<keyof HttpContext, string | symbol>>(
-  key: V
-): HttpContext[V] | null
+export function getFromHttpContext<V extends string | symbol>(key: V): HttpContext[V] | null
 
 /**
  * Gets a value from the context by key.
