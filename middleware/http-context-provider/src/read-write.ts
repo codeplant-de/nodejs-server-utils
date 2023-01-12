@@ -2,7 +2,9 @@ import cls from 'cls-hooked'
 import {HttpContext, HttpContextKey} from './types/context'
 import {namespaceId} from './middleware'
 
-export function getFromHttpContext<V extends string | symbol>(key: V): HttpContext[V] | null
+export function getFromHttpContext<K extends keyof HttpContext>(key: K): HttpContext[K] | null
+
+export function getFromHttpContext<V = unknown>(key: string | symbol): V | null
 
 /**
  * Gets a value from the context by key.
@@ -10,7 +12,7 @@ export function getFromHttpContext<V extends string | symbol>(key: V): HttpConte
  * @param {string} key
  * @return null | any
  */
-export function getFromHttpContext<V = unknown>(key: keyof HttpContext): V | null {
+export function getFromHttpContext<V = unknown>(key: string | symbol): V | null {
   const ns = cls.getNamespace(namespaceId)
   if (ns?.active) {
     // @ts-expect-error cls-hooked also supports symbol keys

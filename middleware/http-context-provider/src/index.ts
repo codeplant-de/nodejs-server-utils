@@ -1,6 +1,6 @@
 import middleware from './middleware'
 
-export {namespaceId as httpContextNamespaceId} from './middleware'
+export {namespaceId as httpContextNamespaceId, getClsNamespace} from './middleware'
 export {getFromHttpContext, storeInHttpContext} from './read-write'
 
 export default middleware
