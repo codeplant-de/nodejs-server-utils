@@ -1,6 +1,6 @@
 {
   "name": "@codeplant-de/nodejs-server-middleware",
-  "version": "1.0.0-rc.9",
+  "version": "1.0.0-rc.10",
   "main": "lib/index.js",
   "types": "lib/types.d.ts",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "build:types": "yarn cp-transpile types lib"
   },
   "dependencies": {
-    "@codeplant-de/http-context-provider-middleware": "^1.0.0-rc.9",
+    "@codeplant-de/http-context-provider-middleware": "^1.0.0-rc.10",
     "@codeplant-de/logger-provider-middleware": "^1.0.0-rc.2",
     "@codeplant-de/request-id-provider-middleware": "^1.0.0-rc.2",
     "@codeplant-de/request-logging-middleware": "^1.0.0-rc.7",
