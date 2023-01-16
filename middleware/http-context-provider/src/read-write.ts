@@ -1,6 +1,5 @@
-import cls from 'cls-hooked'
-import {HttpContext, HttpContextKey} from './types/context'
-import {namespaceId} from './middleware'
+import {getClsNamespace} from './middleware'
+import {HttpContext} from './types/context'
 
 export function getFromHttpContext<K extends keyof HttpContext>(key: K): HttpContext[K] | null
 
@@ -13,10 +12,9 @@ export function getFromHttpContext<V = unknown>(key: string | symbol): V | null
  * @return null | any
  */
 export function getFromHttpContext<V = unknown>(key: string | symbol): V | null {
-  const ns = cls.getNamespace(namespaceId)
-  if (ns?.active) {
-    // @ts-expect-error cls-hooked also supports symbol keys
-    return ns.get(key)
+  const store = getClsNamespace().getStore()
+  if (store?.has(key)) {
+    return store.get(key)
   }
   return null
 }
@@ -26,11 +24,11 @@ export function getFromHttpContext<V = unknown>(key: string | symbol): V | null 
  * @param {string|symbol} key
  * @param {*} value
  */
-export const storeInHttpContext = <V = unknown>(key: HttpContextKey, value: V): V | null => {
-  const ns = cls.getNamespace(namespaceId)
-  if (ns?.active) {
-    // @ts-expect-error cls-hooked also supports symbol keys
-    return ns.set(key, value)
+export const storeInHttpContext = <V = unknown>(key: string | symbol, value: V): V | null => {
+  const store = getClsNamespace().getStore()
+  if (store) {
+    store.set(key, value)
+    return value
   }
   return null
 }

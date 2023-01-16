@@ -19,9 +19,7 @@
     "build:types": "yarn cp-transpile types lib"
   },
   "dependencies": {
-    "@types/cls-hooked": "^4.3.3",
-    "@types/connect": "^3.4.35",
-    "cls-hooked": "^4.2.2"
+    "@types/connect": "^3.4.35"
   },
   "publishConfig": {
     "access": "public"

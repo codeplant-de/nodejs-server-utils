@@ -1,15 +1,15 @@
 import type {NextHandleFunction} from 'connect'
-import cls from 'cls-hooked'
+import {AsyncLocalStorage} from 'node:async_hooks'
 
-export const namespaceId = '23489a35-8e4f-47e0-9598-fa590c48f84d'
+export type Store = Map<string | symbol, any>
 
-export const getClsNamespace = (): cls.Namespace =>
-  cls.getNamespace(namespaceId) || cls.createNamespace(namespaceId)
+const asyncLocalStorage = new AsyncLocalStorage<Store>()
+
+export const getClsNamespace = (): AsyncLocalStorage<Store> => asyncLocalStorage
 
 // Initializes context for every inbound request
 const httpContextMiddleware: NextHandleFunction = (req, res, next) => {
-  const ns = getClsNamespace()
-  ns.run(() => next())
+  asyncLocalStorage.run(new Map(), () => next())
 }
 
 export default httpContextMiddleware
