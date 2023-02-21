@@ -1,5 +1,5 @@
 import type {NextHandleFunction, IncomingMessage as BaseIncomingMessage} from 'connect'
-import {v4 as uuid} from 'uuid'
+import {v4 as uuid, validate} from 'uuid'
 
 declare module 'http' {
   interface IncomingMessage {
@@ -9,12 +9,16 @@ declare module 'http' {
 
 export const DEFAULT_REQUEST_ID_HEADER = 'x-request-id'
 
-const getRequestIdFromReq = (req: BaseIncomingMessage, headerName: string): string | undefined => {
+const getRequestIdFromReq = (
+  req: BaseIncomingMessage,
+  headerName: string,
+  filter: ((requestId: string) => string | undefined) | undefined
+): string | undefined => {
   const rawHeader = req.headers[headerName.toLowerCase()]
   if (typeof rawHeader === 'undefined' || typeof rawHeader === 'string') {
-    return rawHeader
+    return filter && rawHeader ? filter(rawHeader) : rawHeader
   }
-  return rawHeader[0]
+  return filter && rawHeader[0] ? filter(rawHeader[0]) : rawHeader[0]
 }
 
 export type RequestIdProviderOptions = {
@@ -35,6 +39,8 @@ export type RequestIdProviderOptions = {
    * provide a custom request id generator instead of using built-in uuid v4
    */
   requestIdGenerator?: () => string
+
+  requestIdFilter?: (requestId: string) => string | undefined
 }
 
 const defaultOptions = {
@@ -43,6 +49,8 @@ const defaultOptions = {
   addToReqHeaders: true,
   addToResHeaders: true,
   requestIdGenerator: uuid,
+  requestIdFilter: (requestId: string): string | undefined =>
+    validate(requestId) ? requestId : undefined,
 } satisfies RequestIdProviderOptions
 
 /**
@@ -63,11 +71,13 @@ const requestIdProviderMiddlewareFactory = (
     readFromRequest,
     requestIdGenerator,
     requestIdHeaderName,
+    requestIdFilter,
   } = {...defaultOptions, ...userOptions}
 
   return (req, res, next) => {
     const requestId: string =
-      (readFromRequest && getRequestIdFromReq(req, requestIdHeaderName)) || requestIdGenerator()
+      (readFromRequest && getRequestIdFromReq(req, requestIdHeaderName, requestIdFilter)) ||
+      requestIdGenerator()
 
     if (contextSetter) contextSetter(requestId)
 

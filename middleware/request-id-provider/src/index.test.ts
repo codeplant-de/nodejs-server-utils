@@ -1,3 +1,4 @@
+import {v4 as uuid} from 'uuid'
 import {createMocks} from 'node-mocks-http'
 
 import requestIdProviderMiddlewareFactory, {DEFAULT_REQUEST_ID_HEADER} from './index'
@@ -17,8 +18,11 @@ describe('requestIdProviderMiddlewareFactory', () => {
     expect(req.requestId).toBeTruthy()
   })
 
-  it('reuses the id passed via headers if readFromRequest is true', () => {
-    const requestIdProvider = requestIdProviderMiddlewareFactory({readFromRequest: true})
+  it('reuses the id passed via headers if readFromRequest is true and it is not filtered out', () => {
+    const requestIdProvider = requestIdProviderMiddlewareFactory({
+      readFromRequest: true,
+      requestIdFilter: undefined,
+    })
 
     const {req, res} = createMocks({headers: {[DEFAULT_REQUEST_ID_HEADER]: 'test-id'}})
 
@@ -27,8 +31,24 @@ describe('requestIdProviderMiddlewareFactory', () => {
     expect(req.requestId).toBe('test-id')
   })
 
+  it('does not filter out valid uuids by default', () => {
+    const requestIdProvider = requestIdProviderMiddlewareFactory({
+      readFromRequest: true,
+    })
+
+    const testId = uuid()
+    const {req, res} = createMocks({headers: {[DEFAULT_REQUEST_ID_HEADER]: testId}})
+
+    requestIdProvider(req, res, jest.fn())
+
+    expect(req.requestId).toBe(testId)
+  })
+
   it('ignores the id passed via headers if readFromRequest is false', () => {
-    const requestIdProvider = requestIdProviderMiddlewareFactory({readFromRequest: false})
+    const requestIdProvider = requestIdProviderMiddlewareFactory({
+      readFromRequest: false,
+      requestIdFilter: undefined,
+    })
 
     const {req, res} = createMocks({headers: {[DEFAULT_REQUEST_ID_HEADER]: 'test-id'}})
 
@@ -40,6 +60,7 @@ describe('requestIdProviderMiddlewareFactory', () => {
   it('reads the headers requestId from a different header name if passed via requestIdHeaderName', () => {
     const requestIdProvider = requestIdProviderMiddlewareFactory({
       readFromRequest: true,
+      requestIdFilter: undefined,
       requestIdHeaderName: 'x-test-header',
     })
 
@@ -79,13 +100,27 @@ describe('requestIdProviderMiddlewareFactory', () => {
 
   describe('bad input', () => {
     it('handles headers properly which contain arrays', () => {
-      const requestIdProvider = requestIdProviderMiddlewareFactory({readFromRequest: true})
+      const requestIdProvider = requestIdProviderMiddlewareFactory({
+        readFromRequest: true,
+        requestIdFilter: undefined,
+      })
 
       const {req, res} = createMocks({headers: {[DEFAULT_REQUEST_ID_HEADER]: ['test-id']}})
 
       requestIdProvider(req, res, jest.fn())
 
       expect(req.requestId).toBe('test-id')
+    })
+
+    it('handles headers containing bad request id', () => {
+      const requestIdProvider = requestIdProviderMiddlewareFactory({readFromRequest: true})
+
+      const {req, res} = createMocks({headers: {[DEFAULT_REQUEST_ID_HEADER]: ['test-id']}})
+
+      requestIdProvider(req, res, jest.fn())
+
+      expect(req.requestId).not.toBe('test-id')
+      expect(req.requestId).toEqual(expect.any(String))
     })
   })
 })
