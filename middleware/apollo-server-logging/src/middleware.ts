@@ -17,7 +17,7 @@ import {
   defaultRequestToMetaFormatter,
   defaultResponseToMetaFormatter,
 } from './defaults'
-import {formatTimestamp} from './utils'
+import {assignArrayMeta, assignMeta, formatTimestamp} from './utils'
 
 export type ApolloServerLoggingConfig<
   CTX extends BaseContext = BaseContext,
@@ -60,16 +60,17 @@ const apolloServerLoggingMiddlewareFactory = <
 
   // noinspection UnnecessaryLocalVariableJS
   const plugin: ApolloServerPlugin<CTX> = {
-    // @ts-ignore - need to check for compatibility (async vs not async)
-    requestDidStart: ({request}: GraphQLRequestContext<CTX>): GraphQLRequestListener<CTX> => {
+    requestDidStart: async ({
+      request,
+    }: GraphQLRequestContext<CTX>): Promise<GraphQLRequestListener<CTX>> => {
       const startTimestamp = config.timestampAccessor()
 
       const meta: Record<string, unknown> = {...config.baseMeta}
 
-      if (config.reqField) {
+      if (config.requestToMeta) {
         const reqMeta = config.requestToMeta(request as REQ)
         if (reqMeta) {
-          meta[config.reqField] = reqMeta
+          assignMeta(meta, reqMeta, config.reqField)
         }
       }
 
@@ -77,33 +78,30 @@ const apolloServerLoggingMiddlewareFactory = <
         willSendResponse: async ({errors, response, context}): Promise<void> => {
           meta.duration = formatTimestamp(config.timestampAccessor() - startTimestamp)
 
-          if (config.resField) {
+          if (config.responseToMeta) {
             const resMeta = config.responseToMeta(response as RES)
             if (resMeta) {
-              meta[config.resField] = resMeta
+              assignMeta(meta, resMeta, config.resField)
             }
           }
-          if (config.ctxField) {
+          if (config.contextToMeta) {
             const ctxMeta = config.contextToMeta(context)
             if (ctxMeta) {
-              meta[config.ctxField] = ctxMeta
+              assignMeta(meta, ctxMeta, config.ctxField)
             }
           }
 
-          if (config.errField && errors) {
-            const errMeta = errors.map(err => config.errorToMeta(err as ERR)).filter(Boolean)
+          if (config.errorToMeta && errors) {
+            const formatter = config.errorToMeta
+            const errMeta = errors.map(err => formatter(err as ERR)).filter(Boolean)
             if (errMeta.length > 0) {
-              meta[config.errField] = errMeta
+              assignArrayMeta(meta, errMeta, config.errField)
             }
           }
 
           const infoObj: Record<string, unknown> = {}
 
-          if (config.metaField) {
-            infoObj[config.metaField] = meta
-          } else {
-            Object.assign(infoObj, meta)
-          }
+          assignMeta(infoObj, meta, config.metaField)
 
           const level =
             typeof config.level === 'string'
@@ -128,9 +126,9 @@ const apolloServerLoggingMiddlewareFactory = <
 
           if (message) {
             logger.log({
+              ...infoObj,
               level,
               message,
-              ...infoObj,
             })
           }
         },

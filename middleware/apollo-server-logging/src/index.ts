@@ -17,4 +17,5 @@ export type {
   DynamicLevelFunction,
   ResponseToMetaFormatter,
   SkipFunction,
+  Config,
 } from './types/config'

@@ -1,4 +1,4 @@
-import type {GraphQLRequest, GraphQLResponse, BaseContext} from 'apollo-server-types'
+import type {GraphQLResponse, BaseContext} from 'apollo-server-types'
 import type {GraphQLFormattedError, GraphQLError} from 'graphql'
 import type {
   ContextToMetaFormatter,
@@ -38,6 +38,9 @@ export const defaultErrorToMetaFormatter: ErrorToMetaFormatter<
   ...err,
 })
 
+/**
+ * We are logging as error if at least one error occurred or info if not
+ */
 export const defaultLevelFunction: DynamicLevelFunction<unknown, unknown, unknown, unknown> = (
   _req,
   _res,
@@ -48,8 +51,18 @@ export const defaultLevelFunction: DynamicLevelFunction<unknown, unknown, unknow
   return 'info'
 }
 
-export const defaultErrorMessageTemplate: ErrorMessageTemplate = req =>
-  `-X GQL: error while processing ${req.operationName}`
+export const defaultErrorMessageTemplate: ErrorMessageTemplate = (req, _res, _ctx, err) => {
+  if (err && err.length) {
+    // do something fancy with our errors
+    const errorCodes = err.map(e => e.extensions?.code).filter(Boolean)
+    if (errorCodes.length > 0) {
+      return `-X GQL: "${errorCodes.join('", "')}" error${
+        errorCodes.length > 1 ? 's' : ''
+      } while processing ${req.operationName}`
+    }
+  }
+  return `-X GQL: error while processing ${req.operationName}`
+}
 
 export const defaultMessageTemplate: MessageTemplate = req =>
   `-> GQL: processed ${req.operationName}`

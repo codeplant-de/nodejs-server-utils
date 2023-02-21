@@ -55,13 +55,13 @@ export type Config<
 
   level: string | DynamicLevelFunction<REQ, RES, CTX, ERR>
 
-  requestToMeta: RequestToMetaFormatter<REQ>
+  requestToMeta: RequestToMetaFormatter<REQ> | false
 
-  responseToMeta: ResponseToMetaFormatter<RES>
+  responseToMeta: ResponseToMetaFormatter<RES> | false
 
-  contextToMeta: ContextToMetaFormatter<CTX>
+  contextToMeta: ContextToMetaFormatter<CTX> | false
 
-  errorToMeta: ErrorToMetaFormatter<ERR>
+  errorToMeta: ErrorToMetaFormatter<ERR> | false
 
   skip: SkipFunction<REQ, RES, ERR>
 
@@ -75,7 +75,7 @@ export type Config<
 
   ctxField: string | null
 
-  errField: string | null
+  errField: string
 
   timestampAccessor: () => number
 
