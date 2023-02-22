@@ -4,6 +4,11 @@
   "main": "lib/index.js",
   "types": "lib/types.d.ts",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/codeplant-de/nodejs-server-utils",
+    "directory": "packages/middleware",
+    "type": "git"
+  },
   "exports": {
     ".": {
       "types": "./lib/types.d.ts",
