@@ -1,4 +1,4 @@
-import {getClsNamespace} from './middleware'
+import {getContextStorage} from './context'
 import {HttpContext} from './types/context'
 
 export function getFromHttpContext<K extends keyof HttpContext>(key: K): HttpContext[K] | null
@@ -12,7 +12,7 @@ export function getFromHttpContext<V = unknown>(key: string | symbol): V | null
  * @return null | any
  */
 export function getFromHttpContext<V = unknown>(key: string | symbol): V | null {
-  const store = getClsNamespace().getStore()
+  const store = getContextStorage()
   if (store?.has(key)) {
     return store.get(key)
   }
@@ -25,7 +25,7 @@ export function getFromHttpContext<V = unknown>(key: string | symbol): V | null 
  * @param {*} value
  */
 export const storeInHttpContext = <V = unknown>(key: string | symbol, value: V): V | null => {
-  const store = getClsNamespace().getStore()
+  const store = getContextStorage()
   if (store) {
     store.set(key, value)
     return value
