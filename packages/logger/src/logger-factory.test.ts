@@ -2,16 +2,6 @@ import loggerFactory from './logger-factory'
 import {createTestOutput} from './test-utils'
 
 describe('logger-factory', () => {
-  let consoleSpy: jest.SpyInstance<ReturnType<typeof global.process.stdout.write>>
-
-  beforeEach(() => {
-    consoleSpy = jest.spyOn(global.process.stdout, 'write')
-  })
-
-  afterEach(() => {
-    consoleSpy.mockClear()
-  })
-
   it('creates a valid logger', () => {
     const logger = loggerFactory()
 
@@ -19,6 +9,16 @@ describe('logger-factory', () => {
   })
 
   describe('outputs', () => {
+    let consoleSpy: jest.SpyInstance<ReturnType<typeof global.process.stdout.write>>
+
+    beforeEach(() => {
+      consoleSpy = jest.spyOn(global.process.stdout, 'write')
+    })
+
+    afterEach(() => {
+      consoleSpy.mockClear()
+    })
+
     it('should output to console by default', () => {
       const logger = loggerFactory()
 
@@ -47,6 +47,30 @@ describe('logger-factory', () => {
       expect(stream.toString()).toMatch(/test message/)
       // empty line at end, therefore out log line + one empty line
       expect(stream.toString().split('\n')).toHaveLength(2)
+    })
+  })
+
+  describe('options.dynamicMeta', () => {
+    it('properly adds the dynamicMeta formatter', () => {
+      const [testOutput, stream] = createTestOutput()
+
+      const dynamicMeta = jest.fn(() => ({dynamic: 'meta'}))
+
+      const logger = loggerFactory({
+        silent: true,
+        testOutputStream: testOutput,
+        dynamicMeta,
+      })
+
+      logger.info('test message')
+
+      expect(dynamicMeta).toHaveBeenCalledOnce()
+      expect(JSON.parse(stream.toString())).toStrictEqual({
+        dynamic: 'meta',
+        level: 'info',
+        message: 'test message',
+        timestamp: expect.anything(),
+      })
     })
   })
 })
