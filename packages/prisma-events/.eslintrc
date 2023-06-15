@@ -1,0 +1,14 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "*.test.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "max-classes-per-file": "off",
+        "class-methods-use-this": "off"
+      }
+    }
+  ]
+}

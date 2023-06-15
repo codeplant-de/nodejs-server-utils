@@ -1,0 +1,4 @@
+lib
+coverage
+test-reports
+prisma/test.db

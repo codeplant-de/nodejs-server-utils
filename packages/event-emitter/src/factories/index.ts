@@ -1,0 +1,1 @@
+export {eventEmitterFactory} from './emitter'

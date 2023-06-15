@@ -1,0 +1,8 @@
+lib/**/*.test.js
+lib/**/*.test.d.ts
+coverage
+src
+test-reports
+babel.config.js
+jest.config.js
+tsconfig.json

@@ -20,11 +20,14 @@
     "format": "yarn cp-format",
     "test": "yarn jest --passWithNoTests",
     "build": "rimraf lib && yarn build:cjs && yarn build:types",
-    "build:cjs": "yarn cp-transpile cjs lib",
-    "build:types": "yarn cp-transpile types lib"
+    "build:cjs": "yarn cp-transpile -o lib cjs",
+    "build:types": "yarn cp-transpile -o lib types"
   },
   "dependencies": {
     "@types/connect": "^3.4.35"
+  },
+  "devDependencies": {
+    "@codeplant-de/nodejs-server-logger": "^1.1.0"
   },
   "publishConfig": {
     "access": "public"

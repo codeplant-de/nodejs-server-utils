@@ -1,0 +1,35 @@
+{
+  "name": "@codeplant-de/event-emitter",
+  "version": "1.1.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/codeplant-de/nodejs-server-utils",
+    "directory": "packages/event-emitter",
+    "type": "git"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "lint": "yarn cp-lint",
+    "format": "yarn cp-format",
+    "test": "yarn jest",
+    "build": "rimraf lib && yarn build:cjs && yarn build:types",
+    "build:cjs": "yarn cp-transpile -o lib cjs",
+    "build:types": "yarn cp-transpile -o lib types"
+  },
+  "devDependencies": {
+    "jest": "^27.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "eventemitter2": "^6.4.9"
+  }
+}

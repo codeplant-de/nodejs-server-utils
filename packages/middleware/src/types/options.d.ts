@@ -20,7 +20,7 @@ type RequestIdProviderDisabledOption = {
   requestIdProviderOptions?: Partial<RequestIdProviderOptions>
 }
 
-type RequestIdProviderEnabledOption = {
+export type RequestIdProviderEnabledOption = {
   withRequestIdProvider?: true
   requestIdProviderOptions?: RequestIdProviderOptions
 }
@@ -34,7 +34,7 @@ type LoggerProviderDisabledOption = {
   loggerProviderOptions?: Partial<LoggerProviderOptions>
 }
 
-type LoggerProviderEnabledOption = {
+export type LoggerProviderEnabledOption = {
   withLoggerProvider?: true
 
   loggerProviderOptions: LoggerProviderOptions
@@ -50,7 +50,7 @@ type RequestLoggingDisabledOption = {
   requestLoggingOptions?: Partial<RequestLoggingOptions>
 }
 
-type RequestLoggingEnabledOption =
+export type RequestLoggingEnabledOption =
   | {
       withLoggerProvider: false
 

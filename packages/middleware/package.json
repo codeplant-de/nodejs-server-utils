@@ -21,8 +21,8 @@
     "test": "yarn jest",
     "test:types": "yarn tsd --files ./src/**/*.test-d.ts",
     "build": "rimraf lib && yarn build:cjs && yarn build:types",
-    "build:cjs": "yarn cp-transpile cjs lib",
-    "build:types": "yarn cp-transpile types lib"
+    "build:cjs": "yarn cp-transpile -o lib cjs",
+    "build:types": "yarn cp-transpile -o lib types"
   },
   "dependencies": {
     "@codeplant-de/http-context-provider-middleware": "^1.1.0",
@@ -32,10 +32,14 @@
     "@types/connect": "^3.4.35"
   },
   "devDependencies": {
+    "@codeplant-de/nodejs-server-logger": "^1.1.0",
     "@types/express": "^4.17.15",
     "@types/supertest": "^2.0.12",
     "express": "^4.18.2",
     "supertest": "^6.3.3"
+  },
+  "peerDependencies": {
+    "@codeplant-de/nodejs-server-logger": "^1.1.0"
   },
   "publishConfig": {
     "access": "public"
