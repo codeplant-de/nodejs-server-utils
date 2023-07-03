@@ -8,6 +8,10 @@ export type TransportFactoryOptions = {
 
   silent?: boolean
 
+  console?: boolean
+
+  customLogTransport?: TransportStream
+
   testOutputStream?: WritableStream
 }
 
@@ -15,6 +19,8 @@ const transportFactory = ({
   logFile,
   silent,
   testOutputStream,
+  console,
+  customLogTransport,
 }: TransportFactoryOptions = {}): TransportStream[] => {
   const {Stream, Console, File} = transports
   const configuredTransports: TransportStream[] = []
@@ -28,7 +34,12 @@ const transportFactory = ({
   if (logFile) {
     configuredTransports.push(new File({filename: logFile}))
   }
-  configuredTransports.push(new Console())
+  if (console !== false) {
+    configuredTransports.push(new Console())
+  }
+  if (customLogTransport) {
+    configuredTransports.push(customLogTransport)
+  }
 
   return configuredTransports
 }
