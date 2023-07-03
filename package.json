@@ -9,16 +9,20 @@
     "test": "yarn lerna run test"
   },
   "devDependencies": {
+    "@codeplant-de/babel-config": "^1.0.0-1",
     "@codeplant-de/javascript-linting": "^1.0.0-1",
     "@codeplant-de/javascript-testing": "^1.0.0-1",
     "@codeplant-de/javascript-transpiling": "^1.0.0-1",
     "jest-extended": "^3.2.0",
-    "lerna": "^6.3.0",
+    "lerna": "^7.1.1",
     "node-mocks-http": "^1.12.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.0",
-    "tsd": "^0.25.0",
-    "typescript": "^4.9.4"
+    "tsd": "^0.28.1",
+    "typescript": "^5.0.0"
+  },
+  "resolutions": {
+    "typescript": "^5.0.0"
   },
   "workspaces": [
     "middleware/*",

@@ -21,8 +21,8 @@
     "test": "yarn jest",
     "test:types": "yarn tsd --files ./src/**/*.test-d.ts",
     "build": "rimraf lib && yarn build:cjs && yarn build:types",
-    "build:cjs": "yarn cp-transpile cjs lib",
-    "build:types": "yarn cp-transpile types lib"
+    "build:cjs": "yarn cp-transpile -o lib cjs",
+    "build:types": "yarn cp-transpile -o lib types"
   },
   "dependencies": {
     "apollo-server-types": "^3.7.1",
@@ -31,9 +31,7 @@
   "devDependencies": {
     "apollo-server-errors": "^3.3.1",
     "apollo-server-plugin-base": "^3.7.1",
-    "jest-extended": "^3.2.0",
-    "lerna": "^6.3.0",
-    "typescript": "^4.9.4"
+    "jest-extended": "^3.2.0"
   },
   "publishConfig": {
     "access": "public"
