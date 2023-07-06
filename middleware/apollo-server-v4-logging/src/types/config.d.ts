@@ -1,5 +1,5 @@
-import {GraphQLError, GraphQLFormattedError} from 'graphql'
-import {BaseContext, GraphQLRequest, GraphQLResponse} from 'apollo-server-plugin-base'
+import type {BaseContext, GraphQLRequest, GraphQLResponse} from '@apollo/server'
+import type {GraphQLError} from 'graphql'
 import {
   DynamicLevelFunction,
   RequestToMetaFormatter,
@@ -21,7 +21,7 @@ export type CompatibleGraphQLRequest = GraphQLRequest
 
 export type CompatibleGraphQLResponse = GraphQLResponse
 
-export type CompatibleGraphQLError = GraphQLFormattedError | GraphQLError
+export type CompatibleGraphQLError = GraphQLError
 
 export type Config<
   CTX extends CompatibleContext | unknown,

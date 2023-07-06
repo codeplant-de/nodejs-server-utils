@@ -1,10 +1,10 @@
+import {performance} from 'node:perf_hooks'
 import type {
   ApolloServerPlugin,
-  GraphQLRequestContextWillSendResponse,
-  GraphQLRequestListener,
   GraphQLRequestContext,
-} from 'apollo-server-plugin-base'
-import {performance} from 'node:perf_hooks'
+  GraphQLRequestListener,
+  GraphQLRequestContextWillSendResponse,
+} from '@apollo/server'
 
 import {
   CompatibleContext,
@@ -90,7 +90,7 @@ function apolloServerLoggingMiddlewareFactory<
         willSendResponse: async ({
           errors,
           response,
-          context,
+          contextValue,
         }: GraphQLRequestContextWillSendResponse<CTX>): Promise<void> => {
           meta.duration = formatTimestamp(config.timestampAccessor() - startTimestamp)
 
@@ -101,7 +101,7 @@ function apolloServerLoggingMiddlewareFactory<
             }
           }
           if (config.contextToMeta) {
-            const ctxMeta = config.contextToMeta(context)
+            const ctxMeta = config.contextToMeta(contextValue)
             if (ctxMeta) {
               assignMeta(meta, ctxMeta, config.ctxField)
             }
@@ -125,7 +125,7 @@ function apolloServerLoggingMiddlewareFactory<
               : config.level(
                   request as REQ,
                   response as RES,
-                  context as CTX,
+                  contextValue as CTX,
                   errors as ReadonlyArray<ERR> | undefined
                 )
 
@@ -133,12 +133,12 @@ function apolloServerLoggingMiddlewareFactory<
             ? config.errorMessageTemplate(
                 request as REQ,
                 response as RES,
-                context as CTX,
+                contextValue as CTX,
                 errors as ReadonlyArray<ERR>
               )
-            : config.messageTemplate(request as REQ, response as RES, context as CTX)
+            : config.messageTemplate(request as REQ, response as RES, contextValue as CTX)
 
-          const logger = config.loggerAccessor(request as REQ, context as CTX)
+          const logger = config.loggerAccessor(request as REQ, contextValue as CTX)
 
           if (message) {
             logger.log({
