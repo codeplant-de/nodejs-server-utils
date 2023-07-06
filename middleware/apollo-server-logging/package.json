@@ -1,6 +1,6 @@
 {
   "name": "@codeplant-de/apollo-server-logging-middleware",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
@@ -25,9 +25,9 @@
     "build:types": "yarn cp-transpile -o lib types"
   },
   "devDependencies": {
-    "graphql": "^16.6.0",
     "apollo-server-errors": "^3.3.1",
     "apollo-server-plugin-base": "^3.7.1",
+    "graphql": "^16.6.0",
     "jest-extended": "^3.2.0"
   },
   "publishConfig": {
