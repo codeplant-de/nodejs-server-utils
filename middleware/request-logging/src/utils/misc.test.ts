@@ -1,7 +1,7 @@
 import {createRequest, createResponse} from 'node-mocks-http'
 import type {IncomingMessage} from 'node:http'
-import {mergeFormatters} from './utils'
-import {RequestToMetaFormatter, ResponseToMetaFormatter} from './types/options'
+import {mergeFormatters} from './index'
+import {RequestToMetaFormatter, ResponseToMetaFormatter} from '../types/options'
 
 describe('utils', () => {
   describe('mergeFormatters', () => {

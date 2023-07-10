@@ -1,36 +1,28 @@
-import {IncomingMessage, ServerResponse} from 'node:http'
-import type {Request, Response} from 'express'
-import type {Logger} from '@codeplant-de/nodejs-server-logger'
-
-export type RequestToMetaFormatter<T extends IncomingMessage | Request = IncomingMessage> = (
-  req: T
-) => Record<string, unknown> | undefined
-
-export type ResponseToMetaFormatter<T extends ServerResponse | Response = ServerResponse> = (
-  res: T
-) => Record<string, unknown> | undefined
-
-export type DynamicLevelFunction = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  err?: Error
-) => string
+import {CompatibleRequest, CompatibleResponse, CompatibleLogger} from './compatible'
+import {
+  LevelFunction,
+  MessageTemplate,
+  RequestToMetaFormatter,
+  ResponseToMetaFormatter,
+  SkipFunction,
+  TimestampAccessor,
+} from '../defaults'
 
 export interface Options<
-  REQ extends IncomingMessage | Request = IncomingMessage,
-  RES extends ServerResponse | Response = ServerResponse
+  REQ extends CompatibleRequest | unknown,
+  RES extends CompatibleResponse | unknown
 > {
   requestToMeta: RequestToMetaFormatter<REQ> | RequestToMetaFormatter<REQ>[]
 
   responseToMeta: ResponseToMetaFormatter<RES> | ResponseToMetaFormatter<RES>[]
 
-  skip: (req: REQ, res: RES) => boolean
+  skip: SkipFunction<REQ, RES>
 
-  messageTemplate: (req: REQ, res: RES) => string
+  messageTemplate: MessageTemplate<REQ, RES>
 
-  loggerAccessor: (req: REQ) => Pick<Logger, 'log'>
+  loggerAccessor: (req: REQ) => CompatibleLogger
 
-  level: string | DynamicLevelFunction
+  level: string | LevelFunction
 
   baseMeta: Record<string, unknown>
 
@@ -40,7 +32,7 @@ export interface Options<
 
   resField: string | null
 
-  timestampAccessor: () => number
+  timestampAccessor: TimestampAccessor
 
   hook: 'on-headers' | 'on-finished'
 }

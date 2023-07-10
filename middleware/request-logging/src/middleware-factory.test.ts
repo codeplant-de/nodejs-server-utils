@@ -2,7 +2,7 @@ import request from 'supertest'
 import express from 'express'
 import type {NextHandleFunction} from 'connect'
 import type {Server} from 'node:http'
-import requestLoggingMiddlewareFactory from './request-logging-middleware-factory'
+import requestLoggingMiddlewareFactory from './middleware-factory'
 
 const getSimpleApp = (middleware?: NextHandleFunction): express.Express => {
   const app = express()
@@ -63,9 +63,9 @@ describe('requestLoggingMiddlewareFactory', () => {
             connection: expect.any(String),
             host: expect.any(String),
           },
+          clientIp: '::ffff:127.0.0.1',
           httpVersion: '1.1',
           method: 'GET',
-          originalUrl: '/ping',
           query: {},
           url: '/ping',
         },
@@ -109,9 +109,9 @@ describe('requestLoggingMiddlewareFactory', () => {
           connection: expect.any(String),
           host: expect.any(String),
         },
+        clientIp: '::ffff:127.0.0.1',
         httpVersion: '1.1',
         method: 'GET',
-        originalUrl: '/ping',
         query: {},
         url: '/ping',
       },

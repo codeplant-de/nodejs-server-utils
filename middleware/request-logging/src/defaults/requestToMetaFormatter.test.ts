@@ -1,19 +1,19 @@
 import {createRequest} from 'node-mocks-http'
 
-import {defaultRequestToMeta} from './defaults'
+import {defaultRequestToMetaFormatter} from './requestToMetaFormatter'
 
 describe('defaults', () => {
-  describe('defaultRequestToMeta', () => {
+  describe('defaultRequestToMetaFormatter', () => {
     it('handles a minimal request correctly', () => {
-      const req = createRequest()
+      const req = createRequest({ip: '1.1.1.1'})
       // @ts-ignore
       req.originalUrl = undefined
 
-      expect(defaultRequestToMeta(req)).toStrictEqual({
+      expect(defaultRequestToMetaFormatter(req)).toStrictEqual({
+        clientIp: '1.1.1.1',
         headers: {},
         httpVersion: '[UNKNOWN]',
         method: 'GET',
-        originalUrl: '',
         query: {},
         url: '',
       })
@@ -22,15 +22,16 @@ describe('defaults', () => {
     it('handles a request with search params correctly', () => {
       const req = createRequest({
         url: '/ping?foo=bar',
+        ip: '1.1.1.1',
       })
       // @ts-ignore
       req.originalUrl = undefined
 
-      expect(defaultRequestToMeta(req)).toStrictEqual({
+      expect(defaultRequestToMetaFormatter(req)).toStrictEqual({
+        clientIp: '1.1.1.1',
         headers: {},
         httpVersion: '[UNKNOWN]',
         method: 'GET',
-        originalUrl: '/ping?foo=bar',
         query: {
           foo: 'bar',
         },
@@ -39,15 +40,15 @@ describe('defaults', () => {
     })
 
     it('filters authorization headers', () => {
-      const req = createRequest({headers: {authorization: 'ultra-secure'}})
+      const req = createRequest({headers: {authorization: 'ultra-secure'}, ip: '1.1.1.1'})
 
-      expect(defaultRequestToMeta(req)).toStrictEqual({
+      expect(defaultRequestToMetaFormatter(req)).toStrictEqual({
+        clientIp: '1.1.1.1',
         headers: {
           authorization: '[FILTERED]',
         },
         httpVersion: '[UNKNOWN]',
         method: 'GET',
-        originalUrl: '',
         query: {},
         url: '',
       })
@@ -56,13 +57,14 @@ describe('defaults', () => {
     it('uses pre-populated url parsing data (expressjs case)', () => {
       const req = createRequest({
         url: '/ping?foo=bar',
+        ip: '1.1.1.1',
       })
 
-      expect(defaultRequestToMeta(req)).toStrictEqual({
+      expect(defaultRequestToMetaFormatter(req)).toStrictEqual({
+        clientIp: '1.1.1.1',
         headers: {},
         httpVersion: '[UNKNOWN]',
         method: 'GET',
-        originalUrl: '/ping?foo=bar',
         query: {
           foo: 'bar',
         },

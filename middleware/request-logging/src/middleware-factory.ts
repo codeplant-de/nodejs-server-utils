@@ -1,32 +1,41 @@
 import type {NextFunction} from 'connect'
-import {performance} from 'perf_hooks'
-import {IncomingMessage, ServerResponse} from 'node:http'
 import onHeaders from 'on-headers'
 import onFinished from 'on-finished'
 import {Options} from './types/options'
 
-import {defaultRequestToMeta, defaultResponseToMeta} from './defaults'
 import {formatTimestamp, mergeFormatters} from './utils'
+import {CompatibleRequest, CompatibleResponse} from './types/compatible'
+import {
+  defaultLevelFunction,
+  defaultMessageTemplate,
+  defaultRequestToMetaFormatter,
+  defaultResponseToMetaFormatter,
+  defaultSkipFunction,
+  defaultTimestampAccessor,
+} from './defaults'
 
-export type RequestLoggingOptions = Partial<Options> & Pick<Options, 'loggerAccessor'>
+export type RequestLoggingOptions<
+  REQ extends CompatibleRequest | unknown,
+  RES extends CompatibleResponse | unknown
+> = Partial<Options<REQ, RES>> & Pick<Options<REQ, RES>, 'loggerAccessor'>
 
 const requestLoggingMiddlewareFactory = <
-  REQ extends IncomingMessage = IncomingMessage,
-  RES extends ServerResponse = ServerResponse
+  REQ extends CompatibleRequest,
+  RES extends CompatibleResponse
 >(
-  userOptions: RequestLoggingOptions
+  userOptions: RequestLoggingOptions<REQ, RES>
 ): ((req: REQ, res: RES, next: NextFunction) => void) => {
   const options = {
     hook: 'on-headers',
-    level: 'info',
+    level: defaultLevelFunction,
     metaField: 'meta',
     reqField: 'req',
     resField: 'res',
-    requestToMeta: defaultRequestToMeta,
-    responseToMeta: defaultResponseToMeta,
-    skip: () => false,
-    messageTemplate: (req: REQ): string => `HTTP ${req.method} ${req.url}`,
-    timestampAccessor: () => performance.now(),
+    requestToMeta: defaultRequestToMetaFormatter,
+    responseToMeta: defaultResponseToMetaFormatter,
+    skip: defaultSkipFunction,
+    messageTemplate: defaultMessageTemplate,
+    timestampAccessor: defaultTimestampAccessor,
     baseMeta: {},
     ...userOptions,
   } satisfies Options<REQ, RES>

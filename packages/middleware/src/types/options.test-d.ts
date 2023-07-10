@@ -1,8 +1,8 @@
 import type {Logger} from 'winston'
 // eslint-disable-next-line import/no-unresolved
 import {expectNotAssignable, expectAssignable} from 'tsd'
-import {RequestLoggingOptions} from '@codeplant-de/request-logging-middleware'
-import {LoggerProviderOptions} from '@codeplant-de/logger-provider-middleware'
+import type {RequestLoggingOptions} from '@codeplant-de/request-logging-middleware'
+import type {LoggerProviderOptions} from '@codeplant-de/logger-provider-middleware'
 import {
   RequestLoggingOption,
   LoggerProviderOption,
@@ -21,7 +21,7 @@ const minimalRequestLoggingOptions = {
 
 expectAssignable<LoggerProviderOptions>(minimalLoggerProviderOptions)
 
-expectAssignable<RequestLoggingOptions>(minimalRequestLoggingOptions)
+expectAssignable<RequestLoggingOptions<unknown, unknown>>(minimalRequestLoggingOptions)
 
 /**
  * ContextProviderOption
