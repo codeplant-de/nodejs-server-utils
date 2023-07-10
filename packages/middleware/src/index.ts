@@ -26,13 +26,15 @@ export const defaultCreateMiddlewareStackOptions = {
   withRequestIdProvider: true,
   withLoggerProvider: true,
   withRequestLogging: true,
-} satisfies Partial<CreateMiddlewareStackOptions>
+} satisfies Partial<CreateMiddlewareStackOptions<unknown, unknown>>
 
-const createMiddlewareStack = (userOptions: CreateMiddlewareStackOptions): MiddlewareStack => {
+const createMiddlewareStack = <REQ, RES>(
+  userOptions: CreateMiddlewareStackOptions<REQ, RES>
+): MiddlewareStack => {
   const options = {
     ...defaultCreateMiddlewareStackOptions,
     ...userOptions,
-  }
+  } satisfies CreateMiddlewareStackOptions<REQ, RES>
 
   const middlewareStack = new MiddlewareStack()
 

@@ -1,5 +1,5 @@
 import request from 'supertest'
-import requestLoggingMiddlewareFactory from '../request-logging-middleware-factory'
+import requestLoggingMiddlewareFactory from '../middleware-factory'
 import {measureFunctionPerformance, withSimpleApp, PerformanceResult} from './utils'
 
 describe('requestLoggingMiddlewareFactory performance', () => {

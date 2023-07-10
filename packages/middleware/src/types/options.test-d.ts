@@ -96,44 +96,44 @@ expectAssignable<RequestIdProviderOption>({
  * RequestLoggingOption
  */
 // all properties are optional by default
-expectAssignable<RequestLoggingOption>({})
+expectAssignable<RequestLoggingOption<unknown, unknown>>({})
 
 // can be disabled
-expectAssignable<RequestLoggingOption>({
+expectAssignable<RequestLoggingOption<unknown, unknown>>({
   withRequestLogging: false,
 })
 
 // is not allowed to pass a loggerAccessor by default
-expectNotAssignable<RequestLoggingOption>({
+expectNotAssignable<RequestLoggingOption<unknown, unknown>>({
   requestLoggingOptions: {
     loggerAccessor: () => logger,
   },
 })
 
 // is not allowed to pass a loggerAccessor if enabled
-expectNotAssignable<RequestLoggingOption>({
+expectNotAssignable<RequestLoggingOption<unknown, unknown>>({
   requestLoggingOptions: {
     loggerAccessor: () => logger,
   },
 })
 
 // have to pass a loggerAccessor if loggerProvider is disabled
-expectNotAssignable<RequestLoggingOption>({
+expectNotAssignable<RequestLoggingOption<unknown, unknown>>({
   withLoggerProvider: false,
 })
-expectAssignable<RequestLoggingOption>({
+expectAssignable<RequestLoggingOption<unknown, unknown>>({
   withLoggerProvider: false,
   requestLoggingOptions: {
     loggerAccessor: () => logger,
   },
 })
-expectNotAssignable<RequestLoggingOption>({
+expectNotAssignable<RequestLoggingOption<unknown, unknown>>({
   withLoggerProvider: false,
   withRequestLogging: true,
 })
 
 // when loggerProvider and requestLogging is disabled we don't need to pass anything
-expectAssignable<RequestLoggingOption>({
+expectAssignable<RequestLoggingOption<unknown, unknown>>({
   withLoggerProvider: false,
   withRequestLogging: false,
 })
@@ -142,22 +142,22 @@ expectAssignable<RequestLoggingOption>({
  * CreateMiddlewareStackOptions
  */
 // only logger is required by default
-expectAssignable<CreateMiddlewareStackOptions>({
+expectAssignable<CreateMiddlewareStackOptions<unknown, unknown>>({
   loggerProviderOptions: minimalLoggerProviderOptions,
 })
-expectNotAssignable<CreateMiddlewareStackOptions>({})
+expectNotAssignable<CreateMiddlewareStackOptions<unknown, unknown>>({})
 
 // when the loggerProvider is disabled the requestLogger needs its loggerAccessor to be defined
-expectAssignable<CreateMiddlewareStackOptions>({
+expectAssignable<CreateMiddlewareStackOptions<unknown, unknown>>({
   withLoggerProvider: false,
   requestLoggingOptions: minimalRequestLoggingOptions,
 })
-expectNotAssignable<CreateMiddlewareStackOptions>({
+expectNotAssignable<CreateMiddlewareStackOptions<unknown, unknown>>({
   withLoggerProvider: false,
 })
 
 // if both the loggerProvider & requestLogger are disabled no further config must be passed
-expectAssignable<CreateMiddlewareStackOptions>({
+expectAssignable<CreateMiddlewareStackOptions<unknown, unknown>>({
   withLoggerProvider: false,
   withRequestLogging: false,
 })

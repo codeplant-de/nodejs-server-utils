@@ -47,10 +47,10 @@ type RequestLoggingDisabledOption = {
 
   withRequestLogging: false
 
-  requestLoggingOptions?: Partial<RequestLoggingOptions>
+  requestLoggingOptions?: Partial<RequestLoggingOptions<unknown, unknown>>
 }
 
-export type RequestLoggingEnabledOption =
+export type RequestLoggingEnabledOption<REQ, RES> =
   | {
       withLoggerProvider: false
 
@@ -59,19 +59,21 @@ export type RequestLoggingEnabledOption =
       /**
        * if the logger is not provided via logger provider it must be given as loggerAccessor
        */
-      requestLoggingOptions: RequestLoggingOptions
+      requestLoggingOptions: RequestLoggingOptions<REQ, RES>
     }
   | {
       withLoggerProvider?: true
 
       withRequestLogging?: true
 
-      requestLoggingOptions?: Omit<RequestLoggingOptions, 'loggerAccessor'>
+      requestLoggingOptions?: Omit<RequestLoggingOptions<REQ, RES>, 'loggerAccessor'>
     }
 
-export type RequestLoggingOption = RequestLoggingDisabledOption | RequestLoggingEnabledOption
+export type RequestLoggingOption<REQ, RES> =
+  | RequestLoggingDisabledOption
+  | RequestLoggingEnabledOption<REQ, RES>
 
-export type CreateMiddlewareStackOptions = ContextProviderOption &
+export type CreateMiddlewareStackOptions<REQ, RES> = ContextProviderOption &
   RequestIdProviderOption &
   LoggerProviderOption &
-  RequestLoggingOption
+  RequestLoggingOption<REQ, RES>

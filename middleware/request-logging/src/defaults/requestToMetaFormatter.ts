@@ -1,5 +1,3 @@
-import {IncomingMessage} from 'node:http'
-import type {Request} from 'express'
 import {URL} from 'node:url'
 import {filterSensitiveVariablesHelper, getIpFromExpressRequest, hasOriginalUrl} from '../utils'
 import {CompatibleRequest} from '../types/compatible'
@@ -9,9 +7,7 @@ export type RequestToMetaFormatter<T extends CompatibleRequest | unknown> = (
   req: T
 ) => Record<string, unknown> | undefined
 
-export const defaultRequestToMetaFormatter: RequestToMetaFormatter<CompatibleRequest> = (
-  req: IncomingMessage | Request
-): Record<string, unknown> => {
+export const defaultRequestToMetaFormatter: RequestToMetaFormatter<CompatibleRequest> = req => {
   const headers = filterSensitiveVariablesHelper(req.headers, DEFAULT_SENSITIVE_VARIABLE_LIST)
   const clientIp = getIpFromExpressRequest(req)
 

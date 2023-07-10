@@ -22,5 +22,5 @@ export const isEnabledLoggerProviderOption = (
 ): options is LoggerProviderEnabledOption => options.withLoggerProvider === true
 
 export const isEnabledRequestLoggingOption = (
-  options: RequestLoggingOption
-): options is RequestLoggingEnabledOption => options.withRequestLogging === true
+  options: RequestLoggingOption<any, any>
+): options is RequestLoggingEnabledOption<any, any> => options.withRequestLogging === true
