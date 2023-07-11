@@ -9,5 +9,5 @@ export const DEFAULT_SENSITIVE_VARIABLE_LIST = [
   'auth',
   'authentication',
   'authorization',
-  'cookies',
+  'cookie',
 ] as const
