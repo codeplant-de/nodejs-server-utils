@@ -1,6 +1,6 @@
 {
   "name": "@codeplant-de/nodejs-server-middleware",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "main": "lib/index.js",
   "types": "lib/types.d.ts",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "@codeplant-de/http-context-provider-middleware": "^1.1.2",
     "@codeplant-de/logger-provider-middleware": "^1.1.2",
     "@codeplant-de/request-id-provider-middleware": "^1.1.2",
-    "@codeplant-de/request-logging-middleware": "^1.1.7",
+    "@codeplant-de/request-logging-middleware": "^1.1.8",
     "@types/connect": "^3.4.35"
   },
   "devDependencies": {
