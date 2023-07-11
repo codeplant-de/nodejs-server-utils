@@ -1,5 +1,5 @@
-import {GraphQLError, GraphQLFormattedError} from 'graphql'
-import {BaseContext, GraphQLRequest, GraphQLResponse} from 'apollo-server-plugin-base'
+import type {GraphQLError, GraphQLFormattedError} from 'graphql'
+import type {BaseContext, GraphQLRequest, GraphQLResponse} from 'apollo-server-plugin-base'
 import {
   DynamicLevelFunction,
   RequestToMetaFormatter,
