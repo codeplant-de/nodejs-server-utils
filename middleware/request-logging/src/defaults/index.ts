@@ -1,3 +1,4 @@
+export * from './contextToMetaFormatter'
 export * from './levelFunction'
 export * from './messageTemplate'
 export * from './requestToMetaFormatter'

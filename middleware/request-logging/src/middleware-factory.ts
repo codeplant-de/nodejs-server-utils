@@ -6,6 +6,7 @@ import {Options} from './types/options'
 import {assignMeta, formatTimestamp, mergeFormatters} from './utils'
 import {CompatibleRequest, CompatibleResponse} from './types/compatible'
 import {
+  defaultContextToMetaFormatter,
   defaultLevelFunction,
   defaultMessageTemplate,
   defaultRequestToMetaFormatter,
@@ -31,8 +32,10 @@ const requestLoggingMiddlewareFactory = <
     metaField: 'meta',
     reqField: 'req',
     resField: 'res',
+    ctxField: 'ctx',
     requestToMeta: defaultRequestToMetaFormatter,
     responseToMeta: defaultResponseToMetaFormatter,
+    contextToMeta: defaultContextToMetaFormatter,
     skip: defaultSkipFunction,
     messageTemplate: defaultMessageTemplate,
     timestampAccessor: defaultTimestampAccessor,
@@ -48,6 +51,10 @@ const requestLoggingMiddlewareFactory = <
     typeof config.responseToMeta === 'function'
       ? config.responseToMeta
       : mergeFormatters(config.responseToMeta)
+  const contextToMeta =
+    typeof config.contextToMeta === 'function'
+      ? config.contextToMeta
+      : mergeFormatters(config.contextToMeta)
 
   return (req, res, next) => {
     const startTime = config.timestampAccessor()
@@ -73,6 +80,13 @@ const requestLoggingMiddlewareFactory = <
         const resMeta = responseToMeta(res as RES)
         if (resMeta) {
           assignMeta(meta, resMeta, config.resField)
+        }
+      }
+
+      if (contextToMeta) {
+        const ctxMeta = contextToMeta(req, res)
+        if (ctxMeta) {
+          assignMeta(meta, ctxMeta, config.ctxField)
         }
       }
 

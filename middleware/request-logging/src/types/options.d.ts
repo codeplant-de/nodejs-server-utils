@@ -1,5 +1,6 @@
 import {CompatibleRequest, CompatibleResponse, CompatibleLogger} from './compatible'
 import {
+  ContextToMetaFormatter,
   LevelFunction,
   MessageTemplate,
   RequestToMetaFormatter,
@@ -16,6 +17,8 @@ export interface Options<
 
   responseToMeta: ResponseToMetaFormatter<RES> | ResponseToMetaFormatter<RES>[]
 
+  contextToMeta: ContextToMetaFormatter<REQ, RES> | ContextToMetaFormatter<REQ, RES>[]
+
   skip: SkipFunction<REQ, RES>
 
   messageTemplate: MessageTemplate<REQ, RES>
@@ -31,6 +34,8 @@ export interface Options<
   reqField: string | null
 
   resField: string | null
+
+  ctxField: string | null
 
   timestampAccessor: TimestampAccessor
 
