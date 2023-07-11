@@ -3,7 +3,7 @@ import onHeaders from 'on-headers'
 import onFinished from 'on-finished'
 import {Options} from './types/options'
 
-import {formatTimestamp, mergeFormatters} from './utils'
+import {assignMeta, formatTimestamp, mergeFormatters} from './utils'
 import {CompatibleRequest, CompatibleResponse} from './types/compatible'
 import {
   defaultLevelFunction,
@@ -23,9 +23,9 @@ const requestLoggingMiddlewareFactory = <
   REQ extends CompatibleRequest,
   RES extends CompatibleResponse
 >(
-  userOptions: RequestLoggingOptions<REQ, RES>
+  userConfig: RequestLoggingOptions<REQ, RES>
 ): ((req: REQ, res: RES, next: NextFunction) => void) => {
-  const options = {
+  const config = {
     hook: 'on-headers',
     level: defaultLevelFunction,
     metaField: 'meta',
@@ -37,50 +37,53 @@ const requestLoggingMiddlewareFactory = <
     messageTemplate: defaultMessageTemplate,
     timestampAccessor: defaultTimestampAccessor,
     baseMeta: {},
-    ...userOptions,
+    ...userConfig,
   } satisfies Options<REQ, RES>
 
   const requestToMeta =
-    typeof options.requestToMeta === 'function'
-      ? options.requestToMeta
-      : mergeFormatters(options.requestToMeta)
+    typeof config.requestToMeta === 'function'
+      ? config.requestToMeta
+      : mergeFormatters(config.requestToMeta)
   const responseToMeta =
-    typeof options.responseToMeta === 'function'
-      ? options.responseToMeta
-      : mergeFormatters(options.responseToMeta)
+    typeof config.responseToMeta === 'function'
+      ? config.responseToMeta
+      : mergeFormatters(config.responseToMeta)
 
   return (req, res, next) => {
-    const startTime = options.timestampAccessor()
-    const emitter = options.hook === 'on-headers' ? onHeaders : onFinished
+    const startTime = config.timestampAccessor()
+    const emitter = config.hook === 'on-headers' ? onHeaders : onFinished
+
+    const meta: Record<string, unknown> = {...config.baseMeta}
 
     emitter(res, () => {
-      if (options.skip(req, res)) {
+      if (config.skip(req, res)) {
         return
       }
 
-      const meta: Record<string, any> = {
-        duration: formatTimestamp(options.timestampAccessor() - startTime),
+      meta.duration = formatTimestamp(config.timestampAccessor() - startTime)
+
+      if (requestToMeta) {
+        const reqMeta = requestToMeta(req as REQ)
+        if (reqMeta) {
+          assignMeta(meta, reqMeta, config.reqField)
+        }
       }
 
-      if (options.reqField) {
-        meta[options.reqField] = requestToMeta(req as any)
-      }
-      if (options.resField) {
-        meta[options.resField] = responseToMeta(res as any)
-      }
-
-      const infoObj: Record<string, any> = {}
-      if (options.metaField) {
-        infoObj[options.metaField] = meta
-      } else {
-        Object.assign(infoObj, meta)
+      if (responseToMeta) {
+        const resMeta = responseToMeta(res as RES)
+        if (resMeta) {
+          assignMeta(meta, resMeta, config.resField)
+        }
       }
 
-      const logger = options.loggerAccessor(req)
-      const logLevel = typeof options.level === 'function' ? options.level(req, res) : options.level
+      const infoObj: Record<string, unknown> = {}
+      assignMeta(infoObj, meta, config.metaField)
+
+      const logger = config.loggerAccessor(req)
+      const logLevel = typeof config.level === 'function' ? config.level(req, res) : config.level
       logger.log({
         level: logLevel,
-        message: options.messageTemplate(req, res),
+        message: config.messageTemplate(req, res),
         ...infoObj,
       })
     })
