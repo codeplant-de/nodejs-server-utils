@@ -4,7 +4,6 @@ import type {
   GraphQLRequestListener,
   GraphQLRequestContext,
 } from 'apollo-server-plugin-base'
-import {performance} from 'node:perf_hooks'
 
 import {
   CompatibleContext,
@@ -22,8 +21,10 @@ import {
   defaultRequestToMetaFormatter,
   defaultResponseToMetaFormatter,
   defaultSkipFunction,
+  defaultTimestampFormatter,
+  defaultTimestampAccessor,
 } from './defaults'
-import {assignArrayMeta, assignMeta, formatTimestamp} from './utils'
+import {assignArrayMeta, assignMeta} from './utils'
 
 export type ApolloServerLoggingConfig<
   CTX extends CompatibleContext | unknown,
@@ -46,9 +47,10 @@ export const defaultConfig = {
   resField: 'res',
   ctxField: 'ctx',
   errField: 'err',
-  timestampAccessor: (): number => performance.now(),
+  timestampAccessor: defaultTimestampAccessor,
   errorMessageTemplate: defaultErrorMessageTemplate,
   messageTemplate: defaultMessageTemplate,
+  timestampFormatter: defaultTimestampFormatter,
 } satisfies Omit<
   Config<
     CompatibleContext,
@@ -90,9 +92,9 @@ function apolloServerLoggingMiddlewareFactory<
         willSendResponse: async ({
           errors,
           response,
-          context,
+          context: contextValue,
         }: GraphQLRequestContextWillSendResponse<CTX>): Promise<void> => {
-          meta.duration = formatTimestamp(config.timestampAccessor() - startTimestamp)
+          meta.duration = config.timestampFormatter(config.timestampAccessor() - startTimestamp)
 
           if (config.responseToMeta) {
             const resMeta = config.responseToMeta(response as RES)
@@ -101,7 +103,7 @@ function apolloServerLoggingMiddlewareFactory<
             }
           }
           if (config.contextToMeta) {
-            const ctxMeta = config.contextToMeta(context)
+            const ctxMeta = config.contextToMeta(contextValue)
             if (ctxMeta) {
               assignMeta(meta, ctxMeta, config.ctxField)
             }
@@ -125,7 +127,7 @@ function apolloServerLoggingMiddlewareFactory<
               : config.level(
                   request as REQ,
                   response as RES,
-                  context as CTX,
+                  contextValue as CTX,
                   errors as ReadonlyArray<ERR> | undefined
                 )
 
@@ -133,12 +135,12 @@ function apolloServerLoggingMiddlewareFactory<
             ? config.errorMessageTemplate(
                 request as REQ,
                 response as RES,
-                context as CTX,
+                contextValue as CTX,
                 errors as ReadonlyArray<ERR>
               )
-            : config.messageTemplate(request as REQ, response as RES, context as CTX)
+            : config.messageTemplate(request as REQ, response as RES, contextValue as CTX)
 
-          const logger = config.loggerAccessor(request as REQ, context as CTX)
+          const logger = config.loggerAccessor(request as REQ, contextValue as CTX)
 
           if (message) {
             logger.log({

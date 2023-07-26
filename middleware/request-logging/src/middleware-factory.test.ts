@@ -1,7 +1,7 @@
 import request from 'supertest'
 import express from 'express'
 import type {NextHandleFunction} from 'connect'
-import type {Server} from 'node:http'
+// import type {Server} from 'node:http'
 import requestLoggingMiddlewareFactory from './middleware-factory'
 
 const getSimpleApp = (middleware?: NextHandleFunction): express.Express => {
@@ -14,21 +14,21 @@ const getSimpleApp = (middleware?: NextHandleFunction): express.Express => {
   return app
 }
 
-const withSimpleApp =
-  (middleware?: NextHandleFunction) =>
-  async (callback: (app: express.Express) => void | Promise<void>): Promise<void> => {
-    const app = getSimpleApp(middleware)
-
-    const server = await new Promise<Server>(resolve => {
-      const s = app.listen(9987, () => {
-        resolve(s)
-      })
-    })
-
-    await callback(app)
-
-    server.close()
-  }
+// const withSimpleApp =
+//   (middleware?: NextHandleFunction) =>
+//   async (callback: (app: express.Express) => void | Promise<void>): Promise<void> => {
+//     const app = getSimpleApp(middleware)
+//
+//     const server = await new Promise<Server>(resolve => {
+//       const s = app.listen(9987, () => {
+//         resolve(s)
+//       })
+//     })
+//
+//     await callback(app)
+//
+//     server.close()
+//   }
 
 describe('requestLoggingMiddlewareFactory', () => {
   const testLogger = {log: jest.fn()}

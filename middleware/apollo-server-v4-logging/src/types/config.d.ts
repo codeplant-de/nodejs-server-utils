@@ -9,6 +9,8 @@ import {
   SkipFunction,
   ErrorMessageTemplate,
   MessageTemplate,
+  TimestampFormatter,
+  TimestampAccessor,
 } from '../defaults'
 
 export type CompatibleLogger = {
@@ -55,7 +57,9 @@ export type Config<
 
   errField: string
 
-  timestampAccessor: () => number
+  timestampAccessor: TimestampAccessor
+
+  timestampFormatter: TimestampFormatter
 
   errorMessageTemplate: ErrorMessageTemplate<REQ, RES, CTX, ERR>
 

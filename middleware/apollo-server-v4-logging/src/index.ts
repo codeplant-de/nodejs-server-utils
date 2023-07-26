@@ -18,4 +18,6 @@ export type {
   ResponseToMetaFormatter,
   RequestToMetaFormatter,
   DynamicLevelFunction,
+  TimestampFormatter,
+  TimestampAccessor,
 } from './defaults'

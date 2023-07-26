@@ -1,4 +1,3 @@
-import {performance} from 'node:perf_hooks'
 import type {
   ApolloServerPlugin,
   GraphQLRequestContext,
@@ -22,8 +21,10 @@ import {
   defaultRequestToMetaFormatter,
   defaultResponseToMetaFormatter,
   defaultSkipFunction,
+  defaultTimestampFormatter,
+  defaultTimestampAccessor,
 } from './defaults'
-import {assignArrayMeta, assignMeta, formatTimestamp} from './utils'
+import {assignArrayMeta, assignMeta} from './utils'
 
 export type ApolloServerLoggingConfig<
   CTX extends CompatibleContext | unknown,
@@ -46,9 +47,10 @@ export const defaultConfig = {
   resField: 'res',
   ctxField: 'ctx',
   errField: 'err',
-  timestampAccessor: (): number => performance.now(),
+  timestampAccessor: defaultTimestampAccessor,
   errorMessageTemplate: defaultErrorMessageTemplate,
   messageTemplate: defaultMessageTemplate,
+  timestampFormatter: defaultTimestampFormatter,
 } satisfies Omit<
   Config<
     CompatibleContext,
@@ -92,7 +94,7 @@ function apolloServerLoggingMiddlewareFactory<
           response,
           contextValue,
         }: GraphQLRequestContextWillSendResponse<CTX>): Promise<void> => {
-          meta.duration = formatTimestamp(config.timestampAccessor() - startTimestamp)
+          meta.duration = config.timestampFormatter(config.timestampAccessor() - startTimestamp)
 
           if (config.responseToMeta) {
             const resMeta = config.responseToMeta(response as RES)
