@@ -1,4 +1,3 @@
-export {default as loggerFactory} from './logger-factory'
+export {loggerFactory} from './factory'
 
-export type {LoggerFactoryOptions} from './logger-factory'
-export type {Logger} from 'winston'
+export type {Logger, LogLevel} from './types/logger'

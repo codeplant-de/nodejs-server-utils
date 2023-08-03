@@ -1,1 +1,1 @@
-export {default as dynamicMetaFormat} from './dynamic-meta-format'
+export {default as formatLikeWinston} from './format-like-winston'

@@ -4,17 +4,17 @@ import type {Logger} from '@codeplant-de/nodejs-server-logger'
 
 declare module 'http' {
   interface IncomingMessage {
-    logger: Logger
+    logger: Logger<string>
   }
 }
 
 export type LoggerProviderOptions = {
-  logger: Logger
+  logger: Logger<string>
 
   /**
    * If desired a potentially created child logger can be added to any desired context using this callback
    */
-  contextSetter?: (childLogger: Logger) => void
+  contextSetter?: (childLogger: Logger<string>) => void
 
   /**
    * To add custom meta (e.g. a request id) to the logger context (using Logger.child) provide this callback

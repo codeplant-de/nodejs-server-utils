@@ -1,4 +1,4 @@
-import type {Logger} from 'winston'
+import type {Logger} from '@codeplant-de/nodejs-server-logger'
 // eslint-disable-next-line import/no-unresolved
 import {expectNotAssignable, expectAssignable} from 'tsd'
 import type {RequestLoggingOptions} from '@codeplant-de/request-logging-middleware'
@@ -11,12 +11,12 @@ import {
   CreateMiddlewareStackOptions,
 } from './options'
 
-const logger = {} as Logger
+const logger = {} as Logger<string>
 
 const minimalLoggerProviderOptions = {logger}
 
 const minimalRequestLoggingOptions = {
-  loggerAccessor: (): Logger => logger,
+  loggerAccessor: (): Logger<string> => logger,
 }
 
 expectAssignable<LoggerProviderOptions>(minimalLoggerProviderOptions)

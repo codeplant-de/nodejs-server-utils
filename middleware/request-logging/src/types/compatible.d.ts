@@ -9,4 +9,4 @@ export type CompatibleLogger = {
   log: (logEntry: {level: string; message: string; [optionName: string]: any}) => unknown
 }
 
-export type LogLevel = 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly' | string
+export type LogLevel = string

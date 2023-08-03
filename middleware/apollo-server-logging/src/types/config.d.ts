@@ -14,7 +14,7 @@ import {
 } from '../defaults'
 
 export type CompatibleLogger = {
-  log(infoObj: Record<string, any>): unknown
+  log(infoObj: Record<string, any>): any
 }
 
 export type CompatibleContext = BaseContext
