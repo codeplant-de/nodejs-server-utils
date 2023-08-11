@@ -1,4 +1,4 @@
-export interface LogEntry<L extends string> {
+export interface LogEntry<L extends string = LogLevel> {
   level: L
   message: string
   [metaKey: string]: any

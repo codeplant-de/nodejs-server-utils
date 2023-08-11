@@ -1,3 +1,3 @@
 export {loggerFactory} from './factory'
 
-export type {Logger, LogLevel} from './types/logger'
+export type {Logger, LogLevel, LogEntry} from './types/logger'
