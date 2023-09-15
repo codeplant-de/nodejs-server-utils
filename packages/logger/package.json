@@ -1,6 +1,6 @@
 {
   "name": "@codeplant-de/nodejs-server-logger",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
