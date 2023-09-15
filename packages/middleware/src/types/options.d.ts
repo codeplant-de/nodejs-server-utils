@@ -1,3 +1,5 @@
+import {XOR} from 'ts-essentials'
+
 import {RequestIdProviderOptions} from '@codeplant-de/request-id-provider-middleware'
 import {LoggerProviderOptions} from '@codeplant-de/logger-provider-middleware'
 import {RequestLoggingOptions} from '@codeplant-de/request-logging-middleware'
@@ -50,24 +52,25 @@ type RequestLoggingDisabledOption = {
   requestLoggingOptions?: Partial<RequestLoggingOptions<unknown, unknown>>
 }
 
-export type RequestLoggingEnabledOption<REQ, RES> =
-  | {
-      withLoggerProvider: false
+export type RequestLoggingEnabledOption<REQ, RES> = XOR<
+  {
+    withLoggerProvider: false
 
-      withRequestLogging?: true
+    withRequestLogging?: true
 
-      /**
-       * if the logger is not provided via logger provider it must be given as loggerAccessor
-       */
-      requestLoggingOptions: RequestLoggingOptions<REQ, RES>
-    }
-  | {
-      withLoggerProvider?: true
+    /**
+     * if the logger is not provided via logger provider it must be given as loggerAccessor
+     */
+    requestLoggingOptions: RequestLoggingOptions<REQ, RES>
+  },
+  {
+    withLoggerProvider?: true
 
-      withRequestLogging?: true
+    withRequestLogging?: true
 
-      requestLoggingOptions?: Omit<RequestLoggingOptions<REQ, RES>, 'loggerAccessor'>
-    }
+    requestLoggingOptions?: Omit<RequestLoggingOptions<REQ, RES>, 'loggerAccessor'>
+  }
+>
 
 export type RequestLoggingOption<REQ, RES> =
   | RequestLoggingDisabledOption

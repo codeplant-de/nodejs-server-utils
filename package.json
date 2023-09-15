@@ -16,18 +16,22 @@
     "jest-extended": "^4.0.0",
     "lerna": "^7.1.1",
     "node-mocks-http": "^1.12.1",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.1",
     "ts-jest": "^29.1.1",
-    "tsd": "^0.28.1",
+    "tsd": "^0.29.0",
     "typescript": "^5.0.0"
   },
   "resolutions": {
-    "@types/jest": "^29.0.0",
+    "@types/jest": "^29.5.4",
     "typescript": "^5.0.0",
-    "jest": "^29.0.0"
+    "jest": "^29.7.0"
   },
   "workspaces": [
     "middleware/*",
     "packages/*"
-  ]
+  ],
+  "volta": {
+    "node": "18.17.1",
+    "yarn": "1.22.19"
+  }
 }

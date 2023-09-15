@@ -28,7 +28,11 @@ export const defaultCreateMiddlewareStackOptions = {
   withRequestLogging: true,
 } satisfies Partial<CreateMiddlewareStackOptions<unknown, unknown>>
 
-const createMiddlewareStack = <REQ, RES>(
+export type MiddlewareStackFactory = <REQ, RES>(
+  userOptions: CreateMiddlewareStackOptions<REQ, RES>
+) => MiddlewareStack
+
+const createMiddlewareStack: MiddlewareStackFactory = <REQ, RES>(
   userOptions: CreateMiddlewareStackOptions<REQ, RES>
 ): MiddlewareStack => {
   const options = {
@@ -47,7 +51,7 @@ const createMiddlewareStack = <REQ, RES>(
     middlewareStack.push(
       requestIdProviderMiddlewareFactory({
         ...requestIdProviderOptions,
-        contextSetter: requestId => storeInHttpContext(CONTEXT_KEY_REQUEST_ID, requestId),
+        contextSetter: (requestId: string) => storeInHttpContext(CONTEXT_KEY_REQUEST_ID, requestId),
       })
     )
   }

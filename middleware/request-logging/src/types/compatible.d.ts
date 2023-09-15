@@ -6,7 +6,11 @@ export type CompatibleRequest = IncomingMessage | Request
 export type CompatibleResponse = ServerResponse | Response
 
 export type CompatibleLogger = {
-  log: (logEntry: {level: string; message: string; [optionName: string]: any}) => unknown
+  log: (
+    // @todo somehow infer level type from level function
+    logEntry: {level: any; message: string; [optionName: string]: any},
+    ...meta: any[]
+  ) => unknown
 }
 
 export type LogLevel = string

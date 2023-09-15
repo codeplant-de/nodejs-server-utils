@@ -23,6 +23,7 @@
     "lint": "yarn cp-lint",
     "format": "yarn cp-format",
     "test": "yarn jest",
+    "typecheck": "tsc --noEmit",
     "build": "rimraf lib && yarn build:cjs && yarn build:types",
     "build:cjs": "yarn cp-transpile -o lib cjs",
     "build:types": "yarn cp-transpile -o lib types"
@@ -40,5 +41,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

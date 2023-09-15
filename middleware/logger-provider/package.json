@@ -19,6 +19,7 @@
     "lint": "yarn cp-lint",
     "format": "yarn cp-format",
     "test": "yarn jest --passWithNoTests",
+    "typecheck": "tsc --noEmit",
     "build": "rimraf lib && yarn build:cjs && yarn build:types",
     "build:cjs": "yarn cp-transpile -o lib cjs",
     "build:types": "yarn cp-transpile -o lib types"
@@ -27,12 +28,15 @@
     "@types/connect": "^3.4.35"
   },
   "devDependencies": {
-    "@codeplant-de/nodejs-server-logger": "^1.1.2"
+    "@codeplant-de/nodejs-server-logger": "^2.0.0-rc.2"
   },
   "peerDependencies": {
-    "@codeplant-de/nodejs-server-logger": "^1.1.0"
+    "@codeplant-de/nodejs-server-logger": "^1.1.0 | ^2.0.0"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

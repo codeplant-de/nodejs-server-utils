@@ -11,12 +11,12 @@ import {
   CreateMiddlewareStackOptions,
 } from './options'
 
-const logger = {} as Logger<string>
+const logger = {} as Logger
 
 const minimalLoggerProviderOptions = {logger}
 
 const minimalRequestLoggingOptions = {
-  loggerAccessor: (): Logger<string> => logger,
+  loggerAccessor: (): Logger => logger,
 }
 
 expectAssignable<LoggerProviderOptions>(minimalLoggerProviderOptions)
