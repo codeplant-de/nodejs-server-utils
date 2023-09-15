@@ -217,4 +217,80 @@ describe('logger output', () => {
       ])
     })
   })
+
+  describe('error logging', () => {
+    const testStream = createTestOutput()
+    const logger = loggerFactory({
+      silent: true,
+      testOutputStream: testStream,
+    })
+
+    beforeEach(() => {
+      testStream.clear()
+    })
+
+    it('formats error objects', () => {
+      logger.warn(new Error('test error'))
+
+      expect(testStream).toHaveLogged([
+        {
+          level: 'warn',
+          timestamp: '2023-08-02T19:19:49.795Z',
+          message: 'test error',
+          error: {
+            message: 'test error',
+            stack: expect.any(String),
+            type: 'Error',
+          },
+        },
+      ])
+    })
+
+    it('allows passing errors as meta', () => {
+      logger.warn('some message', {error: new Error('test error')})
+
+      expect(testStream).toHaveLogged([
+        {
+          level: 'warn',
+          timestamp: '2023-08-02T19:19:49.795Z',
+          message: 'some message',
+          error: {
+            message: 'test error',
+            stack: expect.any(String),
+            type: 'Error',
+          },
+        },
+      ])
+    })
+
+    it('logs a custom error properly', () => {
+      class TestError extends Error {
+        statusCode: number
+        constructor(message: string, statusCode: number) {
+          super(message)
+          this.statusCode = statusCode
+
+          if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, TestError)
+          }
+        }
+      }
+
+      logger.warn('some %s', 'message', {error: new TestError('test error', 404)})
+
+      expect(testStream).toHaveLogged([
+        {
+          level: 'warn',
+          timestamp: '2023-08-02T19:19:49.795Z',
+          message: 'some message',
+          error: {
+            message: 'test error',
+            stack: expect.any(String),
+            type: 'TestError',
+            statusCode: 404,
+          },
+        },
+      ])
+    })
+  })
 })

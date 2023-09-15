@@ -63,7 +63,11 @@ const loggerFactory = ({
           return method.call(this, meta, message)
         },
       },
+      serializers: {
+        error: pino.stdSerializers.errWithCause,
+      },
       messageKey: 'message',
+      errorKey: 'error',
     },
     destination
   )
