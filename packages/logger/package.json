@@ -9,16 +9,6 @@
     "directory": "packages/logger",
     "type": "git"
   },
-  "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "default": "./lib/index.js"
-    },
-    "./test": {
-      "types": "./lib/test-utils.d.ts",
-      "default": "./lib/test-utils.js"
-    }
-  },
   "scripts": {
     "lint": "yarn cp-lint",
     "format": "yarn cp-format",

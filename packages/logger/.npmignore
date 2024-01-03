@@ -1,8 +1,11 @@
 lib/**/*.test.js
 lib/**/*.test.d.ts
+lib/setupTests.js
+lib/setupTests.d.ts
 coverage
 src
 test-reports
 babel.config.js
 jest.config.js
 tsconfig.json
+jest.config.ts
