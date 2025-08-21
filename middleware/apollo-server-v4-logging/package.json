@@ -26,12 +26,12 @@
     "build:types": "yarn cp-transpile -o lib types"
   },
   "devDependencies": {
-    "@apollo/server": "^4.7.5",
+    "@apollo/server": "^5.0.0",
     "graphql": "^16.8.0",
     "jest-extended": "^4.0.1"
   },
   "peerDependencies": {
-    "@apollo/server": "^4.0.0",
+    "@apollo/server": "^4.0.0 || ^5.0.0",
     "graphql": "^16.0.0"
   },
   "publishConfig": {
