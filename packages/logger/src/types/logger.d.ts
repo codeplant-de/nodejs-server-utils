@@ -21,6 +21,7 @@ export type LeveledLogger<L extends string> = {
 export type Logger<L extends string = LogLevel> = {
   log: LogMethod<L>
   child(meta: object): Logger<L>
+  level: L,
 } & LeveledLogger<L>
 
 export type LogLevel = 'silent' | 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace'
