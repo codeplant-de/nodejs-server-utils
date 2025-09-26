@@ -1,6 +1,6 @@
 {
   "name": "@codeplant-de/nodejs-server-middleware",
-  "version": "1.1.12",
+  "version": "1.2.0",
   "main": "lib/index.js",
   "types": "lib/types.d.ts",
   "license": "MIT",
@@ -27,14 +27,14 @@
   },
   "dependencies": {
     "@codeplant-de/http-context-provider-middleware": "^1.1.4",
-    "@codeplant-de/logger-provider-middleware": "^1.1.5",
+    "@codeplant-de/logger-provider-middleware": "^1.2.0",
     "@codeplant-de/request-id-provider-middleware": "^1.1.3",
     "@codeplant-de/request-logging-middleware": "^1.1.11",
     "@types/connect": "^3.4.35",
     "ts-essentials": "^9.4.0"
   },
   "devDependencies": {
-    "@codeplant-de/nodejs-server-logger": "^2.0.1",
+    "@codeplant-de/nodejs-server-logger": "^2.1.0",
     "@types/express": "^4.17.15",
     "@types/supertest": "^2.0.12",
     "express": "^4.18.2",
