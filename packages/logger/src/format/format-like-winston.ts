@@ -5,7 +5,7 @@ const splatter = format.splat()
 export const formatLikeWinston = (
   message: string,
   ...meta: any[]
-): [string, Record<string, any>] => {
+): [unknown, Record<string, any>] => {
   const fakeInfoObj = {
     level: 'fake',
     message,
