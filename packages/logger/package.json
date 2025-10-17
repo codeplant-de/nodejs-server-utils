@@ -30,7 +30,7 @@
     "ts-node": "^10.9.1"
   },
   "peerDependencies": {
-    "jest": "^29.6.2"
+    "jest": "^29.6.2 || ^30.0.4"
   },
   "peerDependenciesMeta": {
     "jest": {
