@@ -57,7 +57,7 @@ const loggerFactory = ({
             return method.apply(this, inputArgs)
           }
 
-          const [message, meta] = formatLikeWinston.apply(this, inputArgs)
+          const [message, meta] = formatLikeWinston.apply(this, inputArgs as [string, ...any[]])
 
           // @ts-expect-error don't know, don't care
           return method.call(this, meta, message)
