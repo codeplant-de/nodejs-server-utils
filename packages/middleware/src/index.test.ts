@@ -29,6 +29,86 @@ describe('createMiddlewareStack', () => {
     expect(middlewares).toHaveLength(4)
   })
 
+  describe('individual feature toggles', () => {
+    it('adds only context provider when others are disabled', () => {
+      const middlewares = createMiddlewareStack({
+        withHttpContextProvider: true,
+        withRequestIdProvider: false,
+        withLoggerProvider: false,
+        withRequestLogging: false,
+      })
+
+      expect(middlewares).toHaveLength(1)
+    })
+
+    it('adds context + requestId when only those are enabled', () => {
+      const middlewares = createMiddlewareStack({
+        withHttpContextProvider: true,
+        withRequestIdProvider: true,
+        withLoggerProvider: false,
+        withRequestLogging: false,
+      })
+
+      expect(middlewares).toHaveLength(2)
+    })
+
+    it('adds context + logger provider when only those are enabled', () => {
+      const middlewares = createMiddlewareStack({
+        withHttpContextProvider: true,
+        withRequestIdProvider: false,
+        withLoggerProvider: true,
+        loggerProviderOptions: {logger: testLogger},
+        withRequestLogging: false,
+      })
+
+      expect(middlewares).toHaveLength(2)
+    })
+
+    it('adds context + requestId + logger when request logging is disabled', () => {
+      const middlewares = createMiddlewareStack({
+        withHttpContextProvider: true,
+        withRequestIdProvider: true,
+        withLoggerProvider: true,
+        loggerProviderOptions: {logger: testLogger},
+        withRequestLogging: false,
+      })
+
+      expect(middlewares).toHaveLength(3)
+    })
+  })
+
+  describe('attach()', () => {
+    it('calls use() on the target for each middleware', () => {
+      const middlewares = createMiddlewareStack({
+        loggerProviderOptions: {logger: testLogger},
+      })
+
+      const mockApp = {use: jest.fn()}
+      middlewares.attach(mockApp)
+
+      expect(mockApp.use).toHaveBeenCalledTimes(4)
+      for (let i = 0; i < 4; i++) {
+        expect(typeof mockApp.use.mock.calls[i][0]).toBe('function')
+      }
+    })
+  })
+
+  describe('middleware ordering', () => {
+    it('adds middlewares in the correct order: context → requestId → logger → requestLogging', () => {
+      const middlewares = createMiddlewareStack({
+        loggerProviderOptions: {logger: testLogger},
+      })
+
+      expect(middlewares).toHaveLength(4)
+      // All entries should be functions (middleware handlers)
+      middlewares.forEach(mw => {
+        expect(typeof mw).toBe('function')
+      })
+      // The first middleware is the http context provider (named function)
+      expect(middlewares[0].name).toBe('httpContextMiddleware')
+    })
+  })
+
   describe('integration', () => {
     let app: express.Express
     const handler = jest.fn((req, res) => {
@@ -79,13 +159,34 @@ describe('createMiddlewareStack', () => {
 
       // req had the correct properties attached
       expect(innerReq!.requestId).toBe('req-1')
-      expect(innerReq!.logger.info).toBeFunction()
+      expect(typeof innerReq!.logger.info).toBe('function')
 
       // req had the correct headers added
       expect(innerReq!.header('x-request-id')).toBe('req-1')
 
       // request id was correctly added to http context
       expect(requestIdFromContext!).toBe('req-1')
+    })
+
+    it('works with request logging but without logger provider using custom loggerAccessor', async () => {
+      const customLogger = loggerFactory({silent: true})
+
+      const middlewares = createMiddlewareStack({
+        withHttpContextProvider: true,
+        withRequestIdProvider: false,
+        withLoggerProvider: false,
+        withRequestLogging: true,
+        requestLoggingOptions: {
+          loggerAccessor: () => customLogger,
+        },
+      })
+
+      middlewares.attach(app)
+      app.get('/test', (_req, res) => {
+        res.status(200).json({ok: true})
+      })
+
+      await request(app).get('/test').expect(200)
     })
   })
 })

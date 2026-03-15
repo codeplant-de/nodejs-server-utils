@@ -292,5 +292,52 @@ describe('logger output', () => {
         },
       ])
     })
+
+    it('serializes error with cause chain', () => {
+      const cause = new Error('root cause')
+      const error = new Error('outer error', {cause})
+
+      logger.error('chained', {error})
+
+      expect(testStream).toHaveLogged([
+        {
+          level: 'error',
+          timestamp: '2023-08-02T19:19:49.795Z',
+          message: 'chained',
+          error: expect.objectContaining({
+            message: 'outer error',
+            type: 'Error',
+            cause: expect.objectContaining({
+              message: 'root cause',
+              type: 'Error',
+            }),
+          }),
+        },
+      ])
+    })
+  })
+
+  describe('log() with string level', () => {
+    const testStream = createTestOutput()
+    const logger = loggerFactory({
+      silent: true,
+      testOutputStream: testStream,
+    })
+
+    beforeEach(() => {
+      testStream.clear()
+    })
+
+    it('logs via log(level, message) with a string level', () => {
+      logger.log('warn', 'string level message')
+
+      expect(testStream).toHaveLogged([
+        {
+          level: 'warn',
+          timestamp: '2023-08-02T19:19:49.795Z',
+          message: 'string level message',
+        },
+      ])
+    })
   })
 })

@@ -28,6 +28,30 @@ describe('utils', () => {
 
       expect(rootMeta).toStrictEqual({foo: 'bar', subFoo: {subBar: true, bar: 'baz'}})
     })
+
+    it('assigns to root when propertyKey is null', () => {
+      const meta: Record<string, unknown> = {existing: true}
+
+      assignMeta(meta, {added: 'value'}, null)
+
+      expect(meta).toStrictEqual({existing: true, added: 'value'})
+    })
+
+    it('assigns to root when propertyKey is false', () => {
+      const meta: Record<string, unknown> = {existing: true}
+
+      assignMeta(meta, {added: 'value'}, false)
+
+      expect(meta).toStrictEqual({existing: true, added: 'value'})
+    })
+
+    it('assigns to root when propertyKey is empty string', () => {
+      const meta: Record<string, unknown> = {existing: true}
+
+      assignMeta(meta, {added: 'value'}, '')
+
+      expect(meta).toStrictEqual({existing: true, added: 'value'})
+    })
   })
 
   describe('assignArrayMeta', () => {
@@ -47,6 +71,14 @@ describe('utils', () => {
       assignArrayMeta(rootMeta, data, 'subFoo')
 
       expect(rootMeta).toStrictEqual({foo: 'bar', subFoo: [{subBar: true}, {bar: 'baz'}]})
+    })
+
+    it('overwrites existing non-array property', () => {
+      const meta: Record<string, unknown> = {field: 'not-an-array'}
+
+      assignArrayMeta(meta, [{new: true}], 'field')
+
+      expect(meta).toStrictEqual({field: [{new: true}]})
     })
   })
 })
