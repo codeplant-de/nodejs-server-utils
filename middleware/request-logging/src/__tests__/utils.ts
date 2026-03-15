@@ -63,7 +63,7 @@ const getPercentiles = (buckets: number[], durations: number[]): Record<number, 
 const getPerformanceObserver = (
   options:
     | {
-        entryTypes: ReadonlyArray<EntryType>
+        entryTypes: EntryType[]
         buffered?: boolean | undefined
       }
     | {
@@ -75,7 +75,7 @@ const getPerformanceObserver = (
   const observer = new PerformanceObserver(list => {
     perfEntries.push(...list.getEntries())
   })
-  observer.observe(options)
+  observer.observe(options as any)
 
   return {
     observer,

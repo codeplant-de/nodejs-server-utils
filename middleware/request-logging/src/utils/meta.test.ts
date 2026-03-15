@@ -28,5 +28,37 @@ describe('utils', () => {
 
       expect(rootMeta).toStrictEqual({foo: 'bar', subFoo: {subBar: true, bar: 'baz'}})
     })
+
+    it('assigns to root when propertyKey is null', () => {
+      const meta: Record<string, unknown> = {existing: true}
+
+      assignMeta(meta, {added: 'value'}, null)
+
+      expect(meta).toStrictEqual({existing: true, added: 'value'})
+    })
+
+    it('assigns to root when propertyKey is false', () => {
+      const meta: Record<string, unknown> = {existing: true}
+
+      assignMeta(meta, {added: 'value'}, false as any)
+
+      expect(meta).toStrictEqual({existing: true, added: 'value'})
+    })
+
+    it('assigns to root when propertyKey is empty string', () => {
+      const meta: Record<string, unknown> = {existing: true}
+
+      assignMeta(meta, {added: 'value'}, '')
+
+      expect(meta).toStrictEqual({existing: true, added: 'value'})
+    })
+
+    it('overwrites existing non-object property with the given key', () => {
+      const meta: Record<string, unknown> = {field: 'string-value'}
+
+      assignMeta(meta, {nested: true}, 'field')
+
+      expect(meta).toStrictEqual({field: {nested: true}})
+    })
   })
 })

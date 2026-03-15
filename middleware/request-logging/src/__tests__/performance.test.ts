@@ -25,8 +25,6 @@ describe('requestLoggingMiddlewareFactory performance', () => {
     )(async app => {
       const res = await measureFunctionPerformance(() => request(app).get('/ping'))
 
-      console.log({res, baseLine})
-
       // max 30% less requests
       expect(res.count).toBeGreaterThanOrEqual(baseLine.count * 0.3)
 
